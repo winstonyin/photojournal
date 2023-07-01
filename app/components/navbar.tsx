@@ -1,23 +1,19 @@
-import { Link } from 'react-router-dom'
-
 export default function Navbar() {
   return (
     <nav id="sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen">
       <div className="flex flex-col h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
         <div className="grid h-20 place-items-center">
-          <Link to="/">
-            <div className="w-12 h-12">
-              <img src="icon.png" />
-            </div>
-          </Link>
+          <div className="w-12 h-12">
+            <img src="icon.png" />
+          </div>
         </div>
         <div className="flex-1">
           <ul>
             <li>
-              <Link to="/galleries" className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">冊</Link>
+              <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">冊</div>
             </li>
             <li>
-              <Link to="/posts" className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">篇</Link>
+              <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">篇</div>
             </li>
           </ul>
         </div>
