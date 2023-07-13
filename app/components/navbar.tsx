@@ -1,19 +1,32 @@
+'use client'
+
+import Link from "next/link"
+import { usePathname } from 'next/navigation'
+import Logo from "./navbar/logo"
+import ThemeToggle from "./navbar/theme-toggle"
+
 export default function Navbar() {
+  const pathname = usePathname()
+
   return (
-    <nav id="sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen">
+    <nav id="sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen text-gray-900 dark:text-gray-50">
       <div className="flex flex-col h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
-        <div className="grid h-20 place-items-center">
-          <div className="w-12 h-12">
-            <img src="icon.png" />
-          </div>
-        </div>
+        <Logo />
         <div className="flex-1">
           <ul>
             <li>
-              <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">冊</div>
+              <Link
+                href="/galleries"
+                className={pathname.startsWith("/galleries") ?
+                  "grid h-16 place-items-center bg-gray-100 dark:bg-gray-800" :
+                  "grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800"}>冊</Link>
             </li>
             <li>
-              <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">篇</div>
+              <Link
+                href="/posts"
+                className={pathname.startsWith("/posts") ?
+                  "grid h-16 place-items-center bg-gray-100 dark:bg-gray-800" :
+                  "grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800"}>篇</Link>
             </li>
           </ul>
         </div>
@@ -23,7 +36,7 @@ export default function Navbar() {
               <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">文</div>
             </li>
             <li>
-              <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800">色</div>
+              <div className="grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800"><ThemeToggle /></div>
             </li>
           </ul>
         </div>

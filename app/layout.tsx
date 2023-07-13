@@ -22,9 +22,11 @@ export default function RootLayout({
         type="image/<generated>"
         sizes="<generated>"
       />
-      <body className={inter.className + "text-gray-900 dark:text-gray-50 bg-gray-100 dark:bg-gray-800"}>
+      <body className={inter.className + "h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-50"}>
         <Navbar />
-        {children}
+        <main className="ml-20 h-screen">
+          {children}
+        </main>
       </body>
     </html>
   )
