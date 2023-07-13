@@ -7,7 +7,7 @@ export default function GalleryItem(props: {
   n_photos: number
 }) {
   return (
-    <div className="inline-block w-80 h-96 rounded-lg m-1 bg-gray-300 dark:bg-gray-700">
+    <div className="inline-block w-80 h-96 rounded-lg m-1 bg-gray-300 dark:bg-gray-700 hover:scale-[1.02] transition-transform">
       <div className="block relative w-full h-80 overflow-hidden rounded-t-lg flex justify-center align-center">
         <Image
           src={props.src}
@@ -17,8 +17,8 @@ export default function GalleryItem(props: {
         />
       </div>
       <div className="block w-full h-16 overflow-hidden text-ellipsis px-3 py-2">
-        <h3>{props.title}</h3>
-        <p>{props.n_photos} photos</p>
+        <h3 className="font-bold">{props.title}</h3>
+        <p className="text-gray-700 dark:text-gray-300">{props.n_photos} photos</p>
       </div>
     </div>
   )

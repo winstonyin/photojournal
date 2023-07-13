@@ -9,7 +9,7 @@ export default function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav id="sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen text-gray-900 dark:text-gray-50">
+    <nav id="sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen text-gray-900 dark:text-gray-100">
       <div className="flex flex-col h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
         <Logo />
         <div className="flex-1">
