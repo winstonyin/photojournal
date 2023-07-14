@@ -9,13 +9,9 @@ export const metadata = {
   description: 'Just your photo journal, no hassle',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({children, modal}: {children: React.ReactNode, modal: React.ReactNode}) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <link
         rel="icon"
         href="/icon?<generated>"
@@ -27,6 +23,7 @@ export default function RootLayout({
         <main className="ml-20 h-screen">
           {children}
         </main>
+        {modal}
       </body>
     </html>
   )
