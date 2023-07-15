@@ -1,10 +1,15 @@
 import Modal from "../../components/modal";
+import Image from "next/image";
 
 export default function PhotoModal() {
   return (
     <Modal>
-      ABCDEalsdkjfalksdjfalskdjflaksdjf
+      <Image
+        src="/lake_serene.jpg"
+        alt="Lightbox"
+        fill
+        className="object-contain"
+      />
     </Modal>
-    // <p>234567899876543123456780000</p>
   )
 }

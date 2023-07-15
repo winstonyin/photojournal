@@ -3,6 +3,6 @@ export default function PhotoPage() {
     // <Modal>
     //   ABCDE
     // </Modal>
-    <p>OK!</p>
+    <p>Photo page</p>
   )
 }
