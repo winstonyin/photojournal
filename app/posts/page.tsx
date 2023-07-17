@@ -1,3 +1,3 @@
-export default function Posts() {
-  return <h1>Posts</h1>
+export default async function Posts() {
+  return <h1>POSTS</h1>
 }

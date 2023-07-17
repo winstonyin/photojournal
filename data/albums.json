@@ -1,0 +1,62 @@
+[
+  {
+    "url": "/content/albums/basic",
+    "title": "basic",
+    "i": 0,
+    "images": [
+      {
+        "src": "/content/albums/basic/campanile.jpg",
+        "i": 0
+      },
+      {
+        "src": "/content/albums/basic/lake_serene.jpg",
+        "i": 1
+      },
+      {
+        "src": "/content/albums/basic/smith_rock.jpg",
+        "i": 2
+      }
+    ],
+    "total": 3
+  },
+  {
+    "url": "/content/albums/basic copy",
+    "title": "basic copy",
+    "i": 1,
+    "images": [
+      {
+        "src": "/content/albums/basic copy/campanile.jpg",
+        "i": 0
+      },
+      {
+        "src": "/content/albums/basic copy/lake_serene.jpg",
+        "i": 1
+      },
+      {
+        "src": "/content/albums/basic copy/smith_rock.jpg",
+        "i": 2
+      }
+    ],
+    "total": 3
+  },
+  {
+    "url": "/content/albums/basic copy 2",
+    "title": "basic copy 2",
+    "i": 2,
+    "images": [
+      {
+        "src": "/content/albums/basic copy 2/campanile.jpg",
+        "i": 0
+      },
+      {
+        "src": "/content/albums/basic copy 2/lake_serene.jpg",
+        "i": 1
+      },
+      {
+        "src": "/content/albums/basic copy 2/smith_rock.jpg",
+        "i": 2
+      }
+    ],
+    "total": 3
+  }
+]

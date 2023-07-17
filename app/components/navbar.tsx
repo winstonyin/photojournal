@@ -16,8 +16,8 @@ export default function Navbar() {
           <ul>
             <li>
               <Link
-                href="/galleries"
-                className={pathname.startsWith("/galleries") ?
+                href="/albums"
+                className={pathname.startsWith("/albums") ?
                   "grid h-16 place-items-center bg-gray-100 dark:bg-gray-800" :
                   "grid h-16 place-items-center hover:bg-gray-100 dark:hover:bg-gray-800"}>冊</Link>
             </li>
