@@ -1,28 +1,5 @@
 [
   {
-    "kind": 1,
-    "url": "/content/albums",
-    "title": "albums",
-    "albums": [
-      {
-        "url": "/content/albums/Even More",
-        "title": "Even More",
-        "i": 0
-      },
-      {
-        "url": "/content/albums/Mine's Postcards",
-        "title": "Mine's Postcards",
-        "i": 1
-      },
-      {
-        "url": "/content/albums/Some More Postcards",
-        "title": "Some More Postcards",
-        "i": 2
-      }
-    ],
-    "total": 3
-  },
-  {
     "kind": 0,
     "url": "/content/albums/Even More",
     "title": "Even More",
@@ -108,7 +85,7 @@
         "i": 19
       }
     ],
-    "total": 20
+    "n_photos": 20
   },
   {
     "kind": 0,
@@ -164,25 +141,7 @@
         "i": 11
       }
     ],
-    "total": 12
-  },
-  {
-    "kind": 1,
-    "url": "/content/albums/Some More Postcards",
-    "title": "Some More Postcards",
-    "albums": [
-      {
-        "url": "/content/albums/Some More Postcards/Batch 1",
-        "title": "Batch 1",
-        "i": 0
-      },
-      {
-        "url": "/content/albums/Some More Postcards/Batch 2",
-        "title": "Batch 2",
-        "i": 1
-      }
-    ],
-    "total": 2
+    "n_photos": 12
   },
   {
     "kind": 0,
@@ -226,7 +185,7 @@
         "i": 8
       }
     ],
-    "total": 9
+    "n_photos": 9
   },
   {
     "kind": 0,
@@ -266,6 +225,54 @@
         "i": 7
       }
     ],
-    "total": 8
+    "n_photos": 8
+  },
+  {
+    "kind": 1,
+    "url": "/content/albums/Some More Postcards",
+    "title": "Some More Postcards",
+    "albums": [
+      {
+        "url": "/content/albums/Some More Postcards/Batch 1",
+        "title": "Batch 1",
+        "i": 0,
+        "n_photos": 9
+      },
+      {
+        "url": "/content/albums/Some More Postcards/Batch 2",
+        "title": "Batch 2",
+        "i": 1,
+        "n_photos": 8
+      }
+    ],
+    "n_albums": 2,
+    "n_photos": 17
+  },
+  {
+    "kind": 1,
+    "url": "/content/albums",
+    "title": "albums",
+    "albums": [
+      {
+        "url": "/content/albums/Even More",
+        "title": "Even More",
+        "i": 0,
+        "n_photos": 20
+      },
+      {
+        "url": "/content/albums/Mine's Postcards",
+        "title": "Mine's Postcards",
+        "i": 1,
+        "n_photos": 12
+      },
+      {
+        "url": "/content/albums/Some More Postcards",
+        "title": "Some More Postcards",
+        "i": 2,
+        "n_photos": 17
+      }
+    ],
+    "n_albums": 3,
+    "n_photos": 49
   }
 ]
