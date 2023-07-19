@@ -30,11 +30,11 @@ function albumEntry(p, contents) {
     url: p.substring(8),
     title: path.basename(p),
     images: images,
-    total: i
+    n_photos: i
   }
 }
 
-function directoryEntry(p, contents) {
+function directoryEntry(p, contents, n_photos) {
   // dirent here must be a directory full of directories
   let albums = []
   let i = 0
@@ -43,7 +43,8 @@ function directoryEntry(p, contents) {
       albums.push({
         url: c.path.substring(8) + '/' + c.name,
         title: c.name,
-        i: i
+        i: i,
+        n_photos: n_photos[i]
       })
       i++
     }
@@ -53,7 +54,8 @@ function directoryEntry(p, contents) {
     url: p.substring(8),
     title: path.basename(p),
     albums: albums,
-    total: i
+    n_albums: i,
+    n_photos: n_photos.reduce((sum, a) => sum + a, 0)
   }
 }
 
@@ -71,7 +73,7 @@ function direntKind(contents) {
   if (!hasFile && !hasDirectory) {
     throw new Error('Directory ' + c.path + '/' + c.name + ' contains no directories or images.')
   }
-  return hasDirectory // hasFile must be opposite
+  return hasDirectory // hasFile is always opposite
 }
 
 function compileAlbums(p, albums) {
@@ -79,12 +81,14 @@ function compileAlbums(p, albums) {
   const contents = fs.readdirSync(p, {withFileTypes: true})
   if (direntKind(contents)) {
     // is full of directories
-    albums.push(directoryEntry(p, contents))
+    let n_photos = []
     for (c of contents) {
       if (c.isDirectory()) {
         albums = compileAlbums(c.path + '/' + c.name, albums)
+        n_photos.push(albums[albums.length-1].n_photos)
       }
     }
+    albums.push(directoryEntry(p, contents, n_photos))
   } else {
     // is full of images
     albums.push(albumEntry(p, contents))
