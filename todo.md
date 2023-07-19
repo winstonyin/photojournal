@@ -6,7 +6,8 @@
 
 == To-do ==
 * Config in each folder (album name, cover photo, ordering, photo descriptions)
-* Nested folders
+* ~~Nested folders~~
+* Use optional catch-all under `/albums` with `params` to match url to entry in json, deciding if directory or album is displayed
 * Posts rendered from markdown
 * Lightbox navigation
 * Metadata

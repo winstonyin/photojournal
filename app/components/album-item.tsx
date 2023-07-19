@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default function GalleryItem(props: {
+export default function AlbumItem(props: {
   src: string,
   url: string,
   title: string,
@@ -13,7 +13,7 @@ export default function GalleryItem(props: {
         <div className="relative w-full h-80 overflow-hidden rounded-t-lg justify-center align-center">
           <Image
             src={props.src}
-            alt={"Gallery - " + props.title}
+            alt={"Album - " + props.title}
             fill
             className="object-cover"
           />

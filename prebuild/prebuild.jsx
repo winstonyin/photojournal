@@ -26,6 +26,7 @@ function albumEntry(p, contents) {
     }
   }
   return {
+    kind: 0,
     url: p.substring(8),
     title: path.basename(p),
     images: images,
@@ -41,13 +42,14 @@ function directoryEntry(p, contents) {
     if (c.isDirectory()) {
       albums.push({
         url: c.path.substring(8) + '/' + c.name,
-        title: path.basename(c.path),
+        title: c.name,
         i: i
       })
       i++
     }
   }
   return {
+    kind: 1,
     url: p.substring(8),
     title: path.basename(p),
     albums: albums,
@@ -90,64 +92,10 @@ function compileAlbums(p, albums) {
   return albums
 }
 
-console.log(compileAlbums(ALBUMS_PATH))
-
-
-// function compileAlbums(p) {
-//   const contents = fs.readdirSync(p, {withFileTypes: true})
-//   // check if dirent is full of directories or full of images (never a mixture)
-//   if (direntKind(contents)) {
-//     // is full of directories
-//     albums.push(directoryEntry(contents))
-//   } else {
-//     // is full of images
-//     let album_entry = {
-//       url: p,
-//       title: 
-//     }
-//     albums.push(album_entry)
-//   }
-
-
-
-
-
-
-//   let albums = []
-//   // let i = 0
-//   for (c of contents) {
-//     if (c.isDirectory()) {
-//       albums.push(albumEntry(c, i))
-//       i++
-//     }
-//   }
-//   return albums
-// }
-
-/*
-Pseudocode:
-
-function compileAlbums(albums, p) {
-  if directory of p contains only images {
-    list_of_image_entries = albumEntry(contents of p)
-    return {
-      url: p,
-      title: p.last_segment,
-      images: list_of_image_entries
-    }
-  }
-}
-
-*/
-
-
-
-
 // console.log(compileAlbums(ALBUMS_PATH))
 
 // .filter(item => !item.isDirectory())
 // .map(item => item.name)
  
-// let data = JSON.stringify(compileAlbums(ALBUMS_PATH), null, 2);
-
-// fs.writeFileSync('data/albums.json', data);
+let data = JSON.stringify(compileAlbums(ALBUMS_PATH), null, 2);
+fs.writeFileSync('data/albums.json', data);
