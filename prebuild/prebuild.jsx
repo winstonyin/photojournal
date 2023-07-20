@@ -81,6 +81,22 @@ function direntKind(contents) {
   return hasDirectory // hasFile is always opposite
 }
 
+function processConfig(p, contents, cover) {
+  let config_file = p + "/config.json"
+  if (fs.existsSync(config_file)) {
+    console.log(config_file + " exists!")
+  } else {
+    let config = {
+      title: path.basename(p) == "albums" ? "All Albums" : path.basename(p),
+      cover: cover.substr(p.length-8), // relative path from p
+      hidden: false,
+      order: contents.filter(c => isImage(c) || c.isDirectory()).map(c => ({name: c.name, desc: ""}))
+    }
+    let data = JSON.stringify(config, null, 2);
+    fs.writeFileSync(p + '/config.json', data);
+  }
+}
+
 function compileAlbums(p, albums) {
   albums = albums || []
   const contents = fs.readdirSync(p, {withFileTypes: true})
@@ -95,18 +111,16 @@ function compileAlbums(p, albums) {
         covers.push(albums[albums.length-1].cover)
       }
     }
+    processConfig(p, contents, covers[0])
     albums.push(directoryEntry(p, contents, n_photos, covers))
   } else {
     // is full of images
+    let first_image = contents.find(c => isImage(c))
+    processConfig(p, contents, first_image.path.substring(8) + '/' + first_image.name)
     albums.push(albumEntry(p, contents))
   }
   return albums
 }
-
-// console.log(compileAlbums(ALBUMS_PATH))
-
-// .filter(item => !item.isDirectory())
-// .map(item => item.name)
  
 let data = JSON.stringify(compileAlbums(ALBUMS_PATH), null, 2);
-fs.writeFileSync('data/albums.json', data);
+// fs.writeFileSync('data/albums.json', data);
