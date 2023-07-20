@@ -2,6 +2,7 @@
   {
     "kind": 0,
     "url": "/content/albums/Even More",
+    "cover": "/content/albums/Even More/For Mine (sharing)-31.jpg",
     "title": "Even More",
     "images": [
       {
@@ -90,6 +91,7 @@
   {
     "kind": 0,
     "url": "/content/albums/Mine's Postcards",
+    "cover": "/content/albums/Mine's Postcards/For Mine (sharing)-19.jpg",
     "title": "Mine's Postcards",
     "images": [
       {
@@ -146,6 +148,7 @@
   {
     "kind": 0,
     "url": "/content/albums/Some More Postcards/Batch 1",
+    "cover": "/content/albums/Some More Postcards/Batch 1/For Mine (sharing)-1.jpg",
     "title": "Batch 1",
     "images": [
       {
@@ -190,6 +193,7 @@
   {
     "kind": 0,
     "url": "/content/albums/Some More Postcards/Batch 2",
+    "cover": "/content/albums/Some More Postcards/Batch 2/For Mine (sharing)-10.jpg",
     "title": "Batch 2",
     "images": [
       {
@@ -231,16 +235,19 @@
     "kind": 1,
     "url": "/content/albums/Some More Postcards",
     "title": "Some More Postcards",
+    "cover": "/content/albums/Some More Postcards/Batch 1/For Mine (sharing)-1.jpg",
     "albums": [
       {
         "url": "/content/albums/Some More Postcards/Batch 1",
         "title": "Batch 1",
+        "cover": "/content/albums/Some More Postcards/Batch 1/For Mine (sharing)-1.jpg",
         "i": 0,
         "n_photos": 9
       },
       {
         "url": "/content/albums/Some More Postcards/Batch 2",
         "title": "Batch 2",
+        "cover": "/content/albums/Some More Postcards/Batch 2/For Mine (sharing)-10.jpg",
         "i": 1,
         "n_photos": 8
       }
@@ -252,22 +259,26 @@
     "kind": 1,
     "url": "/content/albums",
     "title": "albums",
+    "cover": "/content/albums/Even More/For Mine (sharing)-31.jpg",
     "albums": [
       {
         "url": "/content/albums/Even More",
         "title": "Even More",
+        "cover": "/content/albums/Even More/For Mine (sharing)-31.jpg",
         "i": 0,
         "n_photos": 20
       },
       {
         "url": "/content/albums/Mine's Postcards",
         "title": "Mine's Postcards",
+        "cover": "/content/albums/Mine's Postcards/For Mine (sharing)-19.jpg",
         "i": 1,
         "n_photos": 12
       },
       {
         "url": "/content/albums/Some More Postcards",
         "title": "Some More Postcards",
+        "cover": "/content/albums/Some More Postcards/Batch 1/For Mine (sharing)-1.jpg",
         "i": 2,
         "n_photos": 17
       }
