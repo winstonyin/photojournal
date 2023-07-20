@@ -13,7 +13,7 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
       return (
         <div className="p-3 flex flex-wrap">
           {contents.map(c =>
-            <AlbumItem key={c.i} src="/sdlkjf.jpg" url={c.url.substring(8)} title={c.title} n_photos={c.n_photos} />
+            <AlbumItem key={c.i} src={c.cover} url={c.url.substring(8)} title={c.title} n_photos={c.n_photos} />
           )}
         </div>
       )}
