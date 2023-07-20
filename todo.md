@@ -8,7 +8,10 @@
 * Config in each folder (album name, cover photo, ordering, photo descriptions)
 * ~~Nested folders~~
 * ~~Use optional catch-all under `/albums` with `params` to match url to entry in json, deciding if directory or album is displayed~~
-* Cover image, total content of parent sourced from children (prebuild)
+* ~~Cover image, total content of parent sourced from children (prebuild)~~
+* ~~Breadcrumb~~
+* Links and formatting in breadcrumb
+* Check if json is processed at build time or runtime
 * Posts rendered from markdown
 * Lightbox navigation
 * Metadata

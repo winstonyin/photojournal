@@ -25,11 +25,12 @@ function albumEntry(p, contents) {
       i++
     }
   }
+  let title = path.basename(p)
   return {
     kind: 0,
     url: p.substring(8),
     cover: images[0].src,
-    title: path.basename(p),
+    title: title,
     images: images,
     n_photos: i
   }
@@ -51,10 +52,11 @@ function directoryEntry(p, contents, n_photos, covers) {
       i++
     }
   }
+  let title = path.basename(p) == "albums" ? "All Albums" : path.basename(p)
   return {
     kind: 1,
     url: p.substring(8),
-    title: path.basename(p),
+    title: title,
     cover: covers[0],
     albums: albums,
     n_albums: i,
