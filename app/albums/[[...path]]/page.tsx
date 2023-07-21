@@ -10,7 +10,6 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
 
   // format breadcrumb
   let url_segments = album_entry ? album_entry.url.split("/").slice(1) : []
-  console.log(url_segments)
   let breadcrumb_array = []
   for (let i = 0; i < url_segments.length; i++) {
     // link all except the last (current) segment

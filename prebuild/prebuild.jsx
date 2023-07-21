@@ -82,9 +82,9 @@ function compileAlbums(p, albums) {
     } else {
       var config = {
         title: path.basename(p) == "albums" ? "All Albums" : path.basename(p),
-        cover: child_entries[0].cover, // default to cover of first child
+        cover: path.basename(p) == "albums" ? "" : child_entries[0].cover, // default to cover of first child
         hidden: false,
-        order: child_directories.map((c, i) => ({name: c.name, title: child_entries[i].title}))
+        order: child_directories.map(c => c.name)
       }
       let data = JSON.stringify(config, null, 2);
       fs.writeFileSync(config_file, data);
@@ -95,13 +95,17 @@ function compileAlbums(p, albums) {
       url: p.substring(16),
       title: config.title,
       cover: config.cover,
-      albums: config.order.map((c, i) => ({
-        url: p.substring(16) + "/" + c.name,
-        title: c.title,
-        cover: child_entries[i].cover,
-        n_albums: child_entries[i].length,
-        n_photos: child_entries[i].n_photos
-      })),
+      albums: config.order.map(c => {
+        let url = p.substring(16) + "/" + c
+        let entry = child_entries.find(d => d.url == url) // to get the right order
+        return {
+          url: url,
+          title: entry.title,
+          cover: entry.cover,
+          n_albums: entry.length,
+          n_photos: entry.n_photos
+        }
+      }),
       n_albums: config.order.length,
       n_photos: child_entries.map(c => c.n_photos).reduce((sum, a) => sum + a, 0)
     }
