@@ -13,6 +13,7 @@ export default function Photo({src, url}: {
           alt="photo"
           fill
           className="object-cover"
+          sizes="320px"
         />
       </Link>
     </div>

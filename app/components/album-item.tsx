@@ -16,6 +16,7 @@ export default function AlbumItem(props: {
             alt={"Album - " + props.title}
             fill
             className="object-cover"
+            sizes="320px"
           />
         </div>
         <div className="block w-full h-16 overflow-hidden text-ellipsis px-3 py-2">

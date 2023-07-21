@@ -17,7 +17,7 @@
 * Posts rendered from markdown
 * Lightbox navigation
 * Metadata
-* Image optimisation
+* ~~Image optimisation (basic)~~
 * Loading animation
 * Auto-generate config template in each folder
 * i18n
