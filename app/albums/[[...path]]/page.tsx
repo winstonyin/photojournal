@@ -5,15 +5,16 @@ import albums from "@/data/albums.json"
 import Link from "next/link"
 
 export default function AlbumPage({params, searchParams}: {params: {path: string[]}, searchParams: {photo: number}}) {
-  const album_url = params.path ? "/content/albums/" + decodeURIComponent(params.path.join("/")) : "/content/albums"
+  const album_url = params.path ? "/albums/" + decodeURIComponent(params.path.join("/")) : "/albums"
   const album_entry = albums.find(a => a.url == album_url)
 
   // format breadcrumb
-  let url_segments = album_entry ? album_entry.url.split("/").slice(2) : []
+  let url_segments = album_entry ? album_entry.url.split("/").slice(1) : []
+  console.log(url_segments)
   let breadcrumb_array = []
   for (let i = 0; i < url_segments.length; i++) {
     // link all except the last (current) segment
-    let breadcrumb_entry = albums.find(a => a.url == "/content/" + url_segments.slice(0, i+1).join("/"))
+    let breadcrumb_entry = albums.find(a => a.url == "/" + url_segments.slice(0, i+1).join("/"))
     let title = breadcrumb_entry ? breadcrumb_entry.title : "Undefined"
     breadcrumb_array.push(
       i < url_segments.length-1 ?
@@ -35,8 +36,8 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
               i < breadcrumb_array.length-1 ? <>{b}&nbsp;&gt;&nbsp;</> : b
             ))}
           </div>
-          {contents.map(c =>
-            <AlbumItem key={c.i} src={c.cover} url={c.url.substring(8)} title={c.title} n_photos={c.n_photos} />
+          {contents.map((c, i) =>
+            <AlbumItem key={i} src={c.cover} url={c.url} title={c.title} n_photos={c.n_photos} />
           )}
         </div>
       )}
@@ -46,7 +47,7 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
     let contents = album_entry.images
     if (contents) {
       const modal = searchParams.photo ?
-        <PhotoModal src={(contents.find(c => c.i == searchParams.photo) || {src: ""}).src} /> : null
+        <PhotoModal src={contents[searchParams.photo].src} /> : null
       return (
         <>
         <div className="p-3 flex flex-wrap">
@@ -55,8 +56,8 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
               i < breadcrumb_array.length-1 ? <>{b}&nbsp;&gt;&nbsp;</> : b
             ))}
           </div>
-          {contents.map(c =>
-            <Photo key={c.i} src={c.src} url={"?photo=" + c.i} />
+          {contents.map((c, i) =>
+            <Photo key={i} src={c.src} url={"?photo=" + i} />
           )}
         </div>
         {modal}

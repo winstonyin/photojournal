@@ -5,7 +5,8 @@
 *** `...?photo=n` displays the modal for the n-th photo
 
 == To-do ==
-* Config in each folder (album name, cover photo, ordering, photo descriptions)
+* ~~Generate config in each folder (album name, cover photo, ordering, photo descriptions)~~
+* ~~Read config from each folder~~
 * ~~Nested folders~~
 * ~~Use optional catch-all under `/albums` with `params` to match url to entry in json, deciding if directory or album is displayed~~
 * ~~Cover image, total content of parent sourced from children (prebuild)~~
