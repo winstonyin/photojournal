@@ -1,18 +1,8 @@
 import Markdown from "markdown-to-jsx"
 import Gallery from "../components/gallery"
+import PhotoModal from "../components/modal/photo-modal"
 
-function cleanGallery(s : string) {
-  // clean up the formatting inside <Gallery> by removing empty lines/spaces and making sure lines begin with /content/albums/
-  return s
-}
-
-function countGallery(s : string) {
-    // return number of photos in gallery
-  let arr = s.match(/\/content\/albums\/.+/g)
-  return arr?.length
-}
-
-export default function Posts() {
+export default function Posts({params, searchParams}: {params: {path: string[]}, searchParams: {photo: number}}) {
   let md = `
 # 優勝美地國家公園
 
@@ -64,40 +54,49 @@ export default function Posts() {
 </Gallery>
 `
   let start_key = 0
+  let srcs : string[] = []
 /*
 First clean up the formating inside <Gallery> by removing empty lines/spaces and making sure all lines begin with /content/albums/
 Count how many items are in each <Gallery>, add start_key="..." to each <Gallery>, and then increment start_key for the next tag
 */
   md = md.replace(/<Gallery>(.+?)<\/Gallery>/gs, (m, p1) => {
     let ret = "<Gallery start_key=\"" + start_key + "\">" + p1 + "</Gallery>"
-    let n = p1.match(/\/content\/albums\/.+/g)?.length
+    let matches = p1.match(/\/content\/albums\/.+/g)
+    let n = matches?.length
+    srcs = srcs.concat(matches)
     start_key += n
-    console.log(ret)
     return ret
   })
+  const modal = searchParams.photo ?
+    <PhotoModal src={srcs[searchParams.photo]} /> : null
 
-  return <Markdown
-    options={{
-      overrides: {
-        Gallery: {
-          component: Gallery
-        },
-        h1: {
-          component: "h1",
-          props: {
-            className: "text-6xl text-center mb-16"
-          }
-        },
-        p: {
-          component: "p",
-          props: {
-            className: "mb-4"
+  return (
+    <>
+    <Markdown
+      options={{
+        overrides: {
+          Gallery: {
+            component: Gallery
+          },
+          h1: {
+            component: "h1",
+            props: {
+              className: "text-6xl text-center mt-5 mb-16"
+            }
+          },
+          p: {
+            component: "p",
+            props: {
+              className: "mb-4"
+            }
           }
         }
-      }
-    }}
-    className="m-auto p-3 w-[808px] text-xl font-thin"
-  >
-    {md}
-  </Markdown>
+      }}
+      className="m-auto p-3 w-[808px] text-xl font-thin"
+    >
+      {md}
+    </Markdown>
+    {modal}
+    </>
+  )
 }
