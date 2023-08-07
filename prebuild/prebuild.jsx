@@ -145,16 +145,23 @@ function processPost(dirent) {
   const date = post.match(/date:\s*(\d\d\d\d)\-(\d\d)\-(\d\d)/)
   const dirs = post.match(/directory:\s*\[.+\]\(.+\)/g)
   // replace directory nicknames by actual paths within <gallery> tags only
+  // count number of photos
+  let n_photos = 0
   post = post.replace(/<gallery>.+?<\/gallery>/gs, m => {
     for (d of dirs) {
       let dict = d.match(/\[(.+)\]\((.+)\)/)
-      let regex = new RegExp('^' + dict[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gm') // auto escape characters
-      let replace = dict[2].replace(/\$/g, '$$$$') // escape dollar signs
+      let regex = new RegExp('^(\\*|)' + dict[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gm') // auto escape characters
+      let replace = '$1' + dict[2].replace(/\$/g, '$$$$') // escape dollar signs
       m = m.replace(regex, replace)
       m = m.replace(/\n+/g, '\n')
+      n_photos += m.match(/\/content\/albums\/.+/g).length
     }
     return m
   })
+  // featured photo
+  featured_match = post.match(/<gallery>.*?\n\*(.+?)\n.*?<\/gallery>/s)
+  let featured = featured_match ? featured_match[1] : post.match(/<gallery>\n+(.+?)\n/s)[1] // get first image if not manually set
+  post = post.replace(/(<gallery>.*?\n)\*(.+?)(\n.*?<\/gallery>)/s, '$1$2$3')
   // remove config lines and multiple empty lines from post
   // <gallery> -> <Gallery>
   post = post.replace(/title:\s*.+/, '')
@@ -163,18 +170,23 @@ function processPost(dirent) {
     .replace(/\n\n+/gs, '\n\n') // empty lines
     .replace(/^\n+/s, '') // leading newline
     .replace(/gallery>/g, 'Gallery>')
+  // generate blurb by removing tags
+  let blurb = post.replace(/(^#.+?$|<Gallery>.+?<\/Gallery>|\n)/gms, '').substring(0, 200)
   return {
     name: dirent.name.substr(0, dirent.name.length-3),
     title: title[1],
     date: date[1] + date[2] + date[3],
-    post: post
+    featured: featured,
+    post: post,
+    n_photos: n_photos,
+    blurb: blurb
   }
 }
 
 function compilePosts(p) {
   // process posts into proper markdown, extract config parameters
   // return data
-  return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost).sort((a, b) => a.date - b.date)
+  return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost).sort((a, b) => b.date - a.date)
 }
 
 let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2);

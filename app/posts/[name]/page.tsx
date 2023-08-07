@@ -1,6 +1,7 @@
 import Markdown from "markdown-to-jsx"
 import Gallery from "@/app/components/gallery"
 import PhotoModal from "@/app/components/modal/photo-modal"
+import Image from "next/image"
 import posts from "@/data/posts.json"
 
 export default function PostPage({params, searchParams}: {params: {name: string}, searchParams: {photo: number}}) {
@@ -19,11 +20,25 @@ export default function PostPage({params, searchParams}: {params: {name: string}
     })
     const modal = searchParams.photo ?
       <PhotoModal src={srcs[searchParams.photo]} /> : null
-  
+
     return (
       <>
-      <h1 className="mt-5 mb-2 text-6xl text-center font-thin">{post.title}</h1>
-      <div className="text-center mb-14 text-gray-500">{post.date}</div>
+      <div className="relative w-full h-full overflow-hidden">
+        <div className="absolute w-full h-[calc(100%-8rem)]">
+          <div className="relative w-full h-full">
+            <Image
+              src={post.featured}
+              alt="featured photo"
+              fill
+              className="object-cover -z-10"
+              // sizes="320px"
+            />
+          </div>
+        </div>
+        <div className="absolute bottom-0 w-full h-64 bg-gradient-to-b from-transparent via-gray-100 to-gray-100 dark:via-gray-800 dark:to-gray-800"></div>
+        <h1 className="absolute bottom-12 left-0 right-0 text-6xl text-center font-thin">{post.title}</h1>
+      </div>
+      <div className="text-center mb-12 text-gray-500">{post.date}</div>
       <Markdown
         options={{
           overrides: {

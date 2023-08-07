@@ -12,9 +12,11 @@
 * ~~Cover image, total content of parent sourced from children (prebuild)~~
 * ~~Breadcrumb~~
 * ~~Links and formatting in breadcrumb~~
+* optimise sizing of featured photo in post
 * Hidden albums
 * Check if json is processed at build time or runtime
-* Posts rendered from markdown
+* ~~Posts rendered from markdown~~
+* ~~Cover photo(s) of each post~~
 * Lightbox navigation
 * Metadata
 * ~~Image optimisation (basic)~~
