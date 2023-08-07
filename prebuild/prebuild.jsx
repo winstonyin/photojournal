@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const ALBUMS_PATH = './public/content/albums'
+const POSTS_PATH = './public/content/posts'
 
 function isImage(dirent) {
   return dirent.isFile() && ['.jpg', '.png', '.webp'].includes(path.extname(dirent.name).toLowerCase())
@@ -132,6 +133,52 @@ function compileAlbums(p, albums) {
   }
 }
 
-// console.log(compileAlbums(ALBUMS_PATH, []))
-let data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2);
-fs.writeFileSync('data/albums.json', data);
+function isPost(dirent) {
+  return dirent.isFile() && path.extname(dirent.name).toLowerCase() == '.md'
+}
+
+function processPost(dirent) {
+  let post = fs.readFileSync(dirent.path + '/' + dirent.name).toString()
+  // extract title, date, directory nicknames
+  // HOW DO CAPTURE GROUPS WORK HERE?
+  const title = post.match(/title:\s*(.+)/)
+  const date = post.match(/date:\s*(\d\d\d\d)\-(\d\d)\-(\d\d)/)
+  const dirs = post.match(/directory:\s*\[.+\]\(.+\)/g)
+  // replace directory nicknames by actual paths within <gallery> tags only
+  post = post.replace(/<gallery>.+?<\/gallery>/gs, m => {
+    for (d of dirs) {
+      let dict = d.match(/\[(.+)\]\((.+)\)/)
+      let regex = new RegExp('^' + dict[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gm') // auto escape characters
+      let replace = dict[2].replace(/\$/g, '$$$$') // escape dollar signs
+      m = m.replace(regex, replace)
+      m = m.replace(/\n+/g, '\n')
+    }
+    return m
+  })
+  // remove config lines and multiple empty lines from post
+  // <gallery> -> <Gallery>
+  post = post.replace(/title:\s*.+/, '')
+    .replace(/date:\s*\d\d\d\d\-\d\d\-\d\d/, '')
+    .replace(/directory:\s*\[.+\]\(.+\)/g, '')
+    .replace(/\n\n+/gs, '\n\n') // empty lines
+    .replace(/^\n+/s, '') // leading newline
+    .replace(/gallery>/g, 'Gallery>')
+  return {
+    name: dirent.name.substr(0, dirent.name.length-3),
+    title: title[1],
+    date: date[1] + date[2] + date[3],
+    post: post
+  }
+}
+
+function compilePosts(p) {
+  // process posts into proper markdown, extract config parameters
+  // return data
+  return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost).sort((a, b) => a.date - b.date)
+}
+
+let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2);
+fs.writeFileSync('data/albums.json', album_data);
+
+let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
+fs.writeFileSync('data/posts.json', post_data)
