@@ -20,7 +20,7 @@ export default function ThemeToggle() {
       style={{  }}
       checked={isDarkMode}
       onChange={toggleDarkMode}
-      size={24}
+      size={28}
     />
   );
 }
