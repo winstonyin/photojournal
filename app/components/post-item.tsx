@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+// import imageLoader from "./image-loader"
 
 export default function PostItem(props: {
   href: string,
@@ -13,6 +14,7 @@ export default function PostItem(props: {
     <Link href={props.href} className="flex w-[660px] h-56 rounded-lg m-1 bg-gray-300 dark:bg-gray-700 hover:scale-[1.01] transition-transform">
       <div className="relative w-56 h-56 overflow-hidden rounded-l-lg justify-center align-middle">
         <Image
+          // loader={imageLoader}
           src={props.featured}
           alt="featured photo"
           fill

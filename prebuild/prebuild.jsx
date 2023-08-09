@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path')
+const sharp = require("sharp");
 
 const ALBUMS_PATH = './public/content/albums'
 const POSTS_PATH = './public/content/posts'
+const SIZES = [320]
 
 function isImage(dirent) {
   return dirent.isFile() && ['.jpg', '.png', '.webp'].includes(path.extname(dirent.name).toLowerCase())
@@ -50,7 +52,7 @@ function albumEntry(p, contents) {
     kind: 0,
     url: p.substring(16),
     title: config.title,
-    cover: p.substr(8) + "/" + config.cover,
+    cover: p.substring(8) + "/" + config.cover,
     images: config.order.map(c => ({
       src: p.substring(8) + "/" + c.name,
       desc: c.desc
@@ -122,6 +124,22 @@ function compileAlbums(p, albums) {
     // is full of images
     // first component
     let album_entry = albumEntry(p, contents)
+    // mkdir and pregenerate smaller images
+    fs.mkdirSync('./public/img/' + p.substring(24), {recursive: true})
+    album_entry.images.map(async i => {
+      for (s of SIZES) {
+        let new_path = './public/img/' + i.src.substring(16)
+        let ext = path.extname(new_path)
+        new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + ext
+        if (!fs.existsSync(new_path)) {
+          console.log('Generating size ' + s + 'px for ' + i.src)
+          await sharp('./public' + i.src).resize({
+            width: s,
+            height: s
+          }).toFile(new_path)
+        }
+      }
+    })
     // second component
     albums.push({
       kind: album_entry.kind,
@@ -140,7 +158,6 @@ function isPost(dirent) {
 function processPost(dirent) {
   let post = fs.readFileSync(dirent.path + '/' + dirent.name).toString()
   // extract title, date, directory nicknames
-  // HOW DO CAPTURE GROUPS WORK HERE?
   const title = post.match(/title:\s*(.+)/)
   const date = post.match(/date:\s*(\d\d\d\d)\-(\d\d)\-(\d\d)/)
   const dirs = post.match(/directory:\s*\[.+\]\(.+\)/g)
@@ -173,7 +190,7 @@ function processPost(dirent) {
   // generate blurb by removing tags
   let blurb = post.replace(/(^#.+?$|<Gallery>.+?<\/Gallery>|\n)/gms, '').substring(0, 200)
   return {
-    name: dirent.name.substr(0, dirent.name.length-3),
+    name: dirent.name.substring(0, dirent.name.length-3),
     title: title[1],
     date: date[1] + date[2] + date[3],
     featured: featured,
@@ -189,8 +206,23 @@ function compilePosts(p) {
   return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost).sort((a, b) => b.date - a.date)
 }
 
+function removeImages() {
+  return
+}
+
+async function getMetadata() {
+  try {
+    const metadata = await sharp("./public/content/albums/mines-postcards/For Mine (sharing)-1.jpg").metadata();
+    console.log(metadata);
+  } catch (error) {
+    console.log(`An error occurred during processing: ${error}`);
+  }
+}
+
 let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2);
 fs.writeFileSync('data/albums.json', album_data);
 
-let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
-fs.writeFileSync('data/posts.json', post_data)
+// let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
+// fs.writeFileSync('data/posts.json', post_data)
+
+// getMetadata()

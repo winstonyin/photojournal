@@ -36,4 +36,5 @@ next-env.d.ts
 
 # user content
 /public/content/
+/public/img/
 /data/
