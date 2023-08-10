@@ -32,7 +32,6 @@ export default function PostPage({params, searchParams}: {params: {name: string}
               alt="featured photo"
               fill
               className="object-cover -z-10"
-              // sizes="320px"
             />
           </div>
         </div>

@@ -11,6 +11,7 @@ export default function Logo() {
             alt="Yin"
             width={48}
             height={48}
+            unoptimized // don't go through imageLoader
           />
         </Link>
       </div>
