@@ -4,8 +4,9 @@ import posts from "@/data/posts.json"
 export default function Posts({params, searchParams}: {params: {path: string[]}, searchParams: {photo: number}}) {
   return (
     <div className="flex flex-wrap p-3">
-    {posts.map(p =>
+    {posts.map((p, i) =>
       <PostItem
+        key={i}
         href={"posts/" + p.name}
         title={p.title}
         date={p.date}
