@@ -17,6 +17,7 @@ export default function AlbumItem(props: {
           fill
           priority
           className="object-cover"
+          unoptimized
         />
       </div>
       <div className="block w-80 h-16 px-3 py-2">

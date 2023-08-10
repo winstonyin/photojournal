@@ -10,7 +10,7 @@ export default function PhotoModal({src} : {src: string}) {
         alt="Lightbox"
         fill
         className="object-contain"
-        sizes="(max-width: 3000px) 100vw"
+        unoptimized
       />
     </Modal>
   )

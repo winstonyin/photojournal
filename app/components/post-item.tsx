@@ -18,6 +18,7 @@ export default function PostItem(props: {
           alt="featured photo"
           fill
           className="object-cover"
+          unoptimized
         />
       </div>
       <div className="flex flex-col justify-between px-4 py-6 overflow-hidden">

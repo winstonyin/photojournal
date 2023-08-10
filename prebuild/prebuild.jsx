@@ -130,13 +130,13 @@ function compileAlbums(p, albums) {
       for (s of SIZES) {
         let new_path = './public/img/' + i.src.substring(16)
         let ext = path.extname(new_path)
-        new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + ext
+        new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + '.webp'
         if (!fs.existsSync(new_path)) {
           console.log('Generating size ' + s + 'px for ' + i.src)
           await sharp('./public' + i.src).resize({
             width: s,
             height: s
-          }).toFile(new_path)
+          }).webp().toFile(new_path)
         }
       }
     })
@@ -207,6 +207,7 @@ function compilePosts(p) {
 }
 
 function removeImages() {
+  // loop through directories and make sure thumbnails / directories have counterparts in /content/albums/
   return
 }
 
@@ -222,7 +223,5 @@ async function getMetadata() {
 let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2);
 fs.writeFileSync('data/albums.json', album_data);
 
-// let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
-// fs.writeFileSync('data/posts.json', post_data)
-
-// getMetadata()
+let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
+fs.writeFileSync('data/posts.json', post_data)

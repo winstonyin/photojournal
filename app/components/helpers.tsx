@@ -7,7 +7,7 @@ export function imageSize(src: string, size: number) {
     s = 320
     new_path = "/img" + src.substring(15)
     let ext = path.extname(new_path)
-    new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + ext
+    new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + '.webp'
   } else {
     new_path = src
   }

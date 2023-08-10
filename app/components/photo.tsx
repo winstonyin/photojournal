@@ -14,6 +14,7 @@ export default function Photo({src, url}: {
           alt="photo"
           fill
           className="object-cover"
+          unoptimized
         />
       </Link>
     </div>
