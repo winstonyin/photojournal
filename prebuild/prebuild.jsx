@@ -31,17 +31,22 @@ function direntKind(contents) {
 function processAlbumConfig(p, contents) {
   // read from config file in directory p or write default config file
   let config_file = p + "/config.json"
+  let config_new = {
+    title: path.basename(p) == "albums" ? "All Albums" : path.basename(p),
+    cover: contents.find(c => isImage(c)).name, // default to first image
+    hidden: false,
+    order: contents.filter(c => isImage(c)).map(c => ({name: c.name, desc: ""}))
+  }
+  let data = JSON.stringify(config_new, null, 2)
   if (fs.existsSync(config_file)) {
     var config = JSON.parse(fs.readFileSync(config_file))
-  } else {
-    var config = {
-      title: path.basename(p) == "albums" ? "All Albums" : path.basename(p),
-      cover: contents.find(c => isImage(c)).name, // default to first image
-      hidden: false,
-      order: contents.filter(c => isImage(c)).map(c => ({name: c.name, desc: ""}))
+    if (JSON.stringify(config) != JSON.stringify(config_new)) {
+      fs.writeFileSync(config_file.substring(0, config_file.length-5) + '-new.json', data)
+      console.log(config_file + ' differs from the newly generated config file, saved as config-new.json')
     }
-    let data = JSON.stringify(config, null, 2);
-    fs.writeFileSync(config_file, data);
+  } else {
+    var config = config_new
+    fs.writeFileSync(config_file, data)
   }
   return config
 }
@@ -81,17 +86,22 @@ function compileAlbums(p, albums) {
     })
     // read or write default config file per directory
     let config_file = p + "/config.json"
+    let config_new = {
+      title: path.basename(p) == "albums" ? "All Albums" : path.basename(p),
+      cover: path.basename(p) == "albums" ? "" : child_entries[0].cover, // default to cover of first child
+      hidden: false,
+      order: child_directories.map(c => c.name)
+    }
+    let data = JSON.stringify(config_new, null, 2)
     if (fs.existsSync(config_file)) {
       var config = JSON.parse(fs.readFileSync(config_file))
-    } else {
-      var config = {
-        title: path.basename(p) == "albums" ? "All Albums" : path.basename(p),
-        cover: path.basename(p) == "albums" ? "" : child_entries[0].cover, // default to cover of first child
-        hidden: false,
-        order: child_directories.map(c => c.name)
+      if (JSON.stringify(config) != JSON.stringify(config_new)) {
+        fs.writeFileSync(config_file.substring(0, config_file.length-5) + '-new.json', data)
+        console.log(config_file + ' differs from the newly generated config file, saved as config-new.json')
       }
-      let data = JSON.stringify(config, null, 2);
-      fs.writeFileSync(config_file, data);
+    } else {
+      var config = config_new
+      fs.writeFileSync(config_file, data)
     }
     // first component (internal recursive info) from config
     let directory_entry = {
@@ -210,6 +220,11 @@ function compilePosts(p) {
 function removeImages(p) {
   // loop through directories recursively and make sure thumbnails / directories have counterparts in /content/albums/
   const contents = fs.readdirSync(p, {withFileTypes: true})
+  if ((contents.filter(c => c.isDirectory()).length + contents.filter(isImage).length) == 0) {
+    fs.rmSync(p, {recursive: true})
+    console.log('Deleted orphaned directory ' + p)
+    return
+  }
   if (direntKind(contents)) {
     // full of directories
     contents.filter(c => c.isDirectory()).map(c => removeImages(c.path + '/' + c.name))
@@ -217,9 +232,16 @@ function removeImages(p) {
     // full of images
     contents.filter(isImage).map(c => {
       let thumbnail = c.path + '/' + c.name
-      let master_file = './public/content/albums' + thumbnail.substring(12)
-      if (!fs.existsSync(master_file)) {
-        fs.unlinkSync(thumbnail)
+      let master_file_sans_ext = './public/content/albums' + thumbnail.substring(12, thumbnail.lastIndexOf('-'))
+      let master_exists = false
+      for (ext of ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP']) {
+        if (fs.existsSync(master_file_sans_ext + ext)) {
+          master_exists = true
+          break
+        }
+      }
+      if (!master_exists) {
+        fs.rmSync(thumbnail)
         console.log('Deleted orphaned thumbnail ' + thumbnail)
       }
     })
