@@ -257,10 +257,10 @@ async function getMetadata() {
   }
 }
 
+removeImages(IMG_PATH)
+
 let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2)
 fs.writeFileSync('data/albums.json', album_data)
-
-removeImages(IMG_PATH)
 
 let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
 fs.writeFileSync('data/posts.json', post_data)
