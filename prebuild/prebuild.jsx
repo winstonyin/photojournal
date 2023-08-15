@@ -4,6 +4,7 @@ const sharp = require("sharp");
 
 const ALBUMS_PATH = './public/content/albums'
 const POSTS_PATH = './public/content/posts'
+const IMG_PATH = './public/img'
 const SIZES = [320]
 
 function isImage(dirent) {
@@ -206,22 +207,38 @@ function compilePosts(p) {
   return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost).sort((a, b) => b.date - a.date)
 }
 
-function removeImages() {
-  // loop through directories and make sure thumbnails / directories have counterparts in /content/albums/
-  return
+function removeImages(p) {
+  // loop through directories recursively and make sure thumbnails / directories have counterparts in /content/albums/
+  const contents = fs.readdirSync(p, {withFileTypes: true})
+  if (direntKind(contents)) {
+    // full of directories
+    contents.filter(c => c.isDirectory()).map(c => removeImages(c.path + '/' + c.name))
+  } else {
+    // full of images
+    contents.filter(isImage).map(c => {
+      let thumbnail = c.path + '/' + c.name
+      let master_file = './public/content/albums' + thumbnail.substring(12)
+      if (!fs.existsSync(master_file)) {
+        fs.unlinkSync(thumbnail)
+        console.log('Deleted orphaned thumbnail ' + thumbnail)
+      }
+    })
+  }
 }
 
 async function getMetadata() {
   try {
-    const metadata = await sharp("./public/content/albums/mines-postcards/For Mine (sharing)-1.jpg").metadata();
-    console.log(metadata);
+    const metadata = await sharp("./public/content/albums/mines-postcards/For Mine (sharing)-1.jpg").metadata()
+    console.log(metadata)
   } catch (error) {
-    console.log(`An error occurred during processing: ${error}`);
+    console.log(`An error occurred during processing: ${error}`)
   }
 }
 
-let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2);
-fs.writeFileSync('data/albums.json', album_data);
+let album_data = JSON.stringify(compileAlbums(ALBUMS_PATH, [])[1], null, 2)
+fs.writeFileSync('data/albums.json', album_data)
+
+removeImages(IMG_PATH)
 
 let post_data = JSON.stringify(compilePosts(POSTS_PATH), null, 2);
 fs.writeFileSync('data/posts.json', post_data)
