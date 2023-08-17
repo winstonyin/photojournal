@@ -20,7 +20,11 @@ export default function PostPage({params, searchParams}: {params: {name: string}
       return ret
     })
     const modal = searchParams.photo ?
-      <PhotoModal src={srcs[searchParams.photo]} /> : null
+      <PhotoModal
+        src={srcs[searchParams.photo]}
+        prev={searchParams.photo - 1}
+        next={start_key == +searchParams.photo+1 ? -2 : +searchParams.photo + 1}
+      /> : null
 
     return (
       <>

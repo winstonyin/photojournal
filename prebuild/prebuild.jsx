@@ -5,7 +5,8 @@ const sharp = require("sharp");
 const ALBUMS_PATH = './public/content/albums'
 const POSTS_PATH = './public/content/posts'
 const IMG_PATH = './public/img'
-const SIZES = [320]
+const THUMB_SIZES = [320] // cropped to square
+const FULL_SIZES = [1200, 2048]
 
 function isImage(dirent) {
   return dirent.isFile() && ['.jpg', '.png', '.webp'].includes(path.extname(dirent.name).toLowerCase())
@@ -138,16 +139,22 @@ function compileAlbums(p, albums) {
     // mkdir and pregenerate smaller images
     fs.mkdirSync('./public/img/' + p.substring(24), {recursive: true})
     album_entry.images.map(async i => {
-      for (s of SIZES) {
+      for (s of THUMB_SIZES) {
         let new_path = './public/img/' + i.src.substring(16)
         let ext = path.extname(new_path)
         new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + '.webp'
         if (!fs.existsSync(new_path)) {
           console.log('Generating size ' + s + 'px for ' + i.src)
-          await sharp('./public' + i.src).resize({
-            width: s,
-            height: s
-          }).webp().toFile(new_path)
+          await sharp('./public' + i.src).resize(s, s).webp().toFile(new_path)
+        }
+      }
+      for (s of FULL_SIZES) {
+        let new_path = './public/img/' + i.src.substring(16)
+        let ext = path.extname(new_path)
+        new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + '.webp'
+        if (!fs.existsSync(new_path)) {
+          console.log('Generating size ' + s + 'px for ' + i.src)
+          await sharp('./public' + i.src).resize(s, s, {fit: 'inside'}).webp().toFile(new_path)
         }
       }
     })
@@ -182,7 +189,8 @@ function processPost(dirent) {
       let replace = '$1' + dict[2].replace(/\$/g, '$$$$') // escape dollar signs
       m = m.replace(regex, replace)
       m = m.replace(/\n+/g, '\n')
-      n_photos += m.match(/\/content\/albums\/.+/g).length
+      let matches = m.match(/\/content\/albums\/.+/g)
+      n_photos += matches ? matches.length : 0
     }
     return m
   })

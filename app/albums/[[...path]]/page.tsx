@@ -3,6 +3,7 @@ import Photo from "@/app/components/photo"
 import PhotoModal from "@/app/components/modal/photo-modal"
 import albums from "@/data/albums.json"
 import Link from "next/link"
+import NoScroll from "@/app/components/noscroll"
 
 export default function AlbumPage({params, searchParams}: {params: {path: string[]}, searchParams: {photo: number}}) {
   const album_url = params.path ? "/albums/" + decodeURIComponent(params.path.join("/")) : "/albums"
@@ -44,9 +45,19 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
   } else if (album_entry && album_entry.kind == 0) {
     // album of images
     let contents = album_entry.images
+    let modal = null
+    let noscroll = null
     if (contents) {
-      const modal = searchParams.photo ?
-        <PhotoModal src={contents[searchParams.photo].src} /> : null
+      if (searchParams.photo) {
+        noscroll = <NoScroll noscroll={true} />
+        modal = <PhotoModal
+          src={contents[searchParams.photo].src}
+          prev={searchParams.photo - 1}
+          next={album_entry.images?.length == +searchParams.photo+1 ? -2 : +searchParams.photo + 1}
+        />
+      } else {
+        noscroll = <NoScroll noscroll={false} />
+      }
       return (
         <>
         <div className="p-3 flex flex-wrap">
@@ -60,6 +71,7 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
           )}
         </div>
         {modal}
+        {noscroll}
         </>
       )
     }
