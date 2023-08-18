@@ -20,7 +20,7 @@ export default function PhotoModal({src, prev_src, next_src, prev, next} : {src:
         </div>
       </div>
       {prev == -1 ? null : <>
-        <Link href={"?photo=" + prev} replace>
+        <Link href={"?photo=" + prev} replace scroll={false}>
           <div className="absolute left-0 h-24 w-16 my-auto grid content-center justify-center align-middle rounded-r-lg text-gray-400 hover:text-gray-50 hover:bg-gray-700 hover:bg-opacity-90 transition-colors">
             <ChevronLeftIcon className="h-16 w-16" />
           </div>
@@ -34,7 +34,7 @@ export default function PhotoModal({src, prev_src, next_src, prev, next} : {src:
           // unoptimized
         /></>}
       {next == -2 ? null : <>
-        <Link href={"?photo=" + next} replace>
+        <Link href={"?photo=" + next} replace scroll={false}>
           <div className="absolute right-0 h-24 w-16 my-auto grid content-center justify-center align-middle rounded-l-lg text-gray-400 hover:text-gray-50 hover:bg-gray-700 hover:bg-opacity-90 transition-colors">
             <ChevronRightIcon className="h-16 w-16" />
           </div>

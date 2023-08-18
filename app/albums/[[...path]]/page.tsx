@@ -51,7 +51,7 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
       if (searchParams.photo) {
         noscroll = <NoScroll noscroll={true} />
         let prev = searchParams.photo - 1
-        let next = album_entry.images?.length == +searchParams.photo+1 ? -2 : +searchParams.photo + 1
+        let next = contents.length == +searchParams.photo+1 ? -2 : +searchParams.photo + 1
         let prev_src = prev == -1 ? "" : contents[prev].src
         let next_src = next == -2 ? "" : contents[next].src
         modal = <PhotoModal

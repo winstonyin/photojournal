@@ -2,6 +2,7 @@ import Markdown from "markdown-to-jsx"
 import Gallery from "@/app/components/gallery"
 import PhotoModal from "@/app/components/modal/photo-modal"
 import Image from "next/image"
+import NoScroll from "@/app/components/noscroll"
 import posts from "@/data/posts.json"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 
@@ -19,12 +20,24 @@ export default function PostPage({params, searchParams}: {params: {name: string}
       start_key += n
       return ret
     })
-    const modal = searchParams.photo ?
-      <PhotoModal
+    let modal = null
+    let noscroll = null
+    if (searchParams.photo) {
+      noscroll = <NoScroll noscroll={true} />
+      let prev = searchParams.photo - 1
+      let next = srcs.length == +searchParams.photo+1 ? -2 : +searchParams.photo + 1
+      let prev_src = prev == -1 ? "" : srcs[prev]
+      let next_src = next == -2 ? "" : srcs[next]
+      modal = <PhotoModal
         src={srcs[searchParams.photo]}
-        prev={searchParams.photo - 1}
-        next={start_key == +searchParams.photo+1 ? -2 : +searchParams.photo + 1}
-      /> : null
+        prev_src={prev_src}
+        next_src={next_src}
+        prev={prev}
+        next={next}
+      />
+    } else {
+      noscroll = <NoScroll noscroll={false} />
+    }
 
     return (
       <>
@@ -66,6 +79,7 @@ export default function PostPage({params, searchParams}: {params: {name: string}
         {md}
       </Markdown>
       {modal}
+      {noscroll}
       </>
     )
   }
