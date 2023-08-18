@@ -5,7 +5,7 @@ const sharp = require("sharp");
 const ALBUMS_PATH = './public/content/albums'
 const POSTS_PATH = './public/content/posts'
 const IMG_PATH = './public/img'
-const THUMB_SIZES = [320] // cropped to square
+const THUMB_SIZES = [320, 640] // cropped to square
 const FULL_SIZES = [1200, 2048]
 
 function isImage(dirent) {
