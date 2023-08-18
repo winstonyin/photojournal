@@ -30,7 +30,7 @@ export default function PhotoModal({src, prev_src, next_src, prev, next} : {src:
           alt="Lightbox"
           fill
           priority
-          className="object-contain -z-20 -ml-[100%]"
+          className="object-contain -z-20 hidden"
           // unoptimized
         /></>}
       {next == -2 ? null : <>
@@ -44,7 +44,7 @@ export default function PhotoModal({src, prev_src, next_src, prev, next} : {src:
           alt="Lightbox"
           fill
           priority
-          className="object-contain -z-20 ml-[100%]"
+          className="object-contain -z-20 hidden"
           // unoptimized
         /></>}
     </Modal>
