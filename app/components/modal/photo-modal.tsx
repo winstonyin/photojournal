@@ -10,6 +10,7 @@ export default function PhotoModal({src, prev, next} : {src: string, prev: numbe
         src={src}
         alt="Lightbox"
         fill
+        priority
         className="object-contain -z-10"
         // unoptimized
       />
@@ -19,13 +20,13 @@ export default function PhotoModal({src, prev, next} : {src: string, prev: numbe
         </div>
       </div>
       {prev == -1 ? null :
-        <Link href={"?photo=" + prev} replace={true}>
+        <Link href={"?photo=" + prev} replace>
           <div className="absolute left-0 h-24 w-16 my-auto grid content-center justify-center align-middle rounded-r-lg text-gray-400 hover:text-gray-50 hover:bg-gray-700 hover:bg-opacity-90 transition-colors">
             <ChevronLeftIcon className="h-16 w-16" />
           </div>
         </Link>}
       {next == -2 ? null :
-        <Link href={"?photo=" + next} replace={true}>
+        <Link href={"?photo=" + next} replace>
           <div className="absolute right-0 h-24 w-16 my-auto grid content-center justify-center align-middle rounded-l-lg text-gray-400 hover:text-gray-50 hover:bg-gray-700 hover:bg-opacity-90 transition-colors">
             <ChevronRightIcon className="h-16 w-16" />
           </div>

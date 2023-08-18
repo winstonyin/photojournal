@@ -68,6 +68,11 @@ function albumEntry(p, contents) {
   }
 }
 
+async function generateImage(src, s, fit, new_path) {
+  await sharp('./public' + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
+  return {src: src, s: s}
+}
+
 function compileAlbums(p, albums) {
   // return the data object about the current directory p and the accumulated flat array
   // p is the path of the current directory ./content/albums/...
@@ -138,14 +143,14 @@ function compileAlbums(p, albums) {
     let album_entry = albumEntry(p, contents)
     // mkdir and pregenerate smaller images
     fs.mkdirSync('./public/img/' + p.substring(24), {recursive: true})
-    album_entry.images.map(async i => {
+    for (i of album_entry.images) {
       for (s of THUMB_SIZES) {
         let new_path = './public/img/' + i.src.substring(16)
         let ext = path.extname(new_path)
         new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + '.webp'
         if (!fs.existsSync(new_path)) {
-          console.log('Generating size ' + s + 'px for ' + i.src)
-          await sharp('./public' + i.src).resize(s, s).webp().toFile(new_path)
+          generateImage(i.src, s, 'cover', new_path)
+            .then(r => console.log('Generated size ' + r.s + 'px for ' + r.src))
         }
       }
       for (s of FULL_SIZES) {
@@ -153,11 +158,11 @@ function compileAlbums(p, albums) {
         let ext = path.extname(new_path)
         new_path = new_path.substring(0, new_path.length - ext.length) + '-' + s + '.webp'
         if (!fs.existsSync(new_path)) {
-          console.log('Generating size ' + s + 'px for ' + i.src)
-          await sharp('./public' + i.src).resize(s, s, {fit: 'inside'}).webp().toFile(new_path)
+          generateImage(i.src, s, 'inside', new_path)
+            .then(r => console.log('Generated size ' + r.s + 'px for ' + r.src))
         }
       }
-    })
+    }
     // second component
     albums.push({
       kind: album_entry.kind,
