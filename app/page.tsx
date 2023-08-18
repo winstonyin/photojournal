@@ -28,12 +28,12 @@ export default function Main() {
     <div className="h-full p-3 flex flex-col justify-evenly">
       <div className="flex justify-evenly">
         {Array.from(Array(n_col).keys()).map(i =>
-          <ImageSwapper srcs={images.slice(max*i, max*(i+1))} />
+          <ImageSwapper key={i} srcs={images.slice(max*i, max*(i+1))} />
         )}
       </div>
       <div className="flex justify-evenly">
         {Array.from(Array(n_col).keys()).map(i =>
-          <ImageSwapper srcs={images.slice(max*(i+n_col), max*(i+1+n_col))} />
+          <ImageSwapper key={i} srcs={images.slice(max*(i+n_col), max*(i+1+n_col))} />
         )}
       </div>
     </div>
