@@ -7,8 +7,8 @@ export default function Photo({src, url}: {
   url: string,
 }) {
   return (
-    <div className="relative inline-block overflow-visible hover:overflow-visible w-32 h-32 lg:w-48 lg:h-48 m-0.5 bg-gray-500 justify-center align-middle hover:scale-[1.02] transition-transform">
-      <Link href={url} className="absolute w-32 h-32 lg:w-48 lg:h-48" scroll={false}>
+    <Link href={url} scroll={false} className="relative inline-block overflow-visible hover:overflow-visible w-32 h-32 lg:w-48 lg:h-48 m-[1px] lg:m-0.5 bg-gray-500 justify-center align-middle hover:scale-[1.02] transition-transform">
+      <div className="absolute w-32 h-32 lg:w-48 lg:h-48">
         <Image
           src={imageSize(src, 192)}
           alt="photo"
@@ -16,7 +16,7 @@ export default function Photo({src, url}: {
           className="object-cover"
           unoptimized
         />
-      </Link>
-    </div>
+      </div>
+    </Link>
   )
 }

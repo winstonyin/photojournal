@@ -28,8 +28,8 @@ export default function ImageSwapper({srcs}: {srcs: string[]}) {
   }, [])
 
   return (
-    <Link href={url} className="inline-block w-80 h-80 rounded-lg m-1 hover:scale-[1.02] transition-transform">
-      <div className="relative w-80 h-80 overflow-hidden rounded-lg justify-center align-middle">
+    <Link href={url} className="inline-block w-40 h-40 lg:w-80 lg:h-80 rounded-lg m-1 hover:scale-[1.02] transition-transform">
+      <div className="relative w-40 h-40 lg:w-80 lg:h-80 overflow-hidden rounded-lg justify-center align-middle">
         <Image
           src={imageSize(srcs[currentIndex], 320)}
           alt="photo"
