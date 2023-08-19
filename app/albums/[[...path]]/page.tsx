@@ -30,8 +30,8 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
     let contents = album_entry.albums
     if (contents) {
       return (
-        <div className="p-3 flex flex-wrap">
-          <div className="mb-2 pl-2 w-full text-3xl font-thin">
+        <div className="lg:pt-3 flex flex-wrap">
+          <div className="mb-2 pl-2 w-full text-2xl lg:text-3xl font-thin">
             {breadcrumb_array.map((b, i) => (
               i < breadcrumb_array.length-1 ? <>{b}&nbsp;&gt;&nbsp;</> : b
             ))}
@@ -66,8 +66,8 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
       }
       return (
         <>
-        <div className="p-3 flex flex-wrap">
-          <div className="mb-2 pl-2 w-full text-3xl font-thin">
+        <div className="lg:pt-3 flex flex-wrap">
+          <div className="mb-2 pl-2 w-full text-2xl lg:text-3xl font-thin">
             {breadcrumb_array.map((b, i) => (
               i < breadcrumb_array.length-1 ? <>{b}&nbsp;&gt;&nbsp;</> : b
             ))}

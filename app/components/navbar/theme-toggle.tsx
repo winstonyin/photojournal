@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({size}: {size: number}) {
   const [isDarkMode, setDarkMode] = useState(true);
 
   const toggleDarkMode = (checked: boolean) => {
@@ -17,10 +17,10 @@ export default function ThemeToggle() {
 
   return (
     <DarkModeSwitch
-      style={{  }}
+      // style={{}}
       checked={isDarkMode}
       onChange={toggleDarkMode}
-      size={28}
+      size={size}
     />
   );
 }

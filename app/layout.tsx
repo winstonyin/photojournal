@@ -20,7 +20,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       />
       <body className={inter.className + "h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"}>
         <Navbar />
-        <main className="ml-20 h-screen">
+        <main className="lg:ml-16 mt-14 lg:mt-auto h-screen">
           {children}
         </main>
       </body>
