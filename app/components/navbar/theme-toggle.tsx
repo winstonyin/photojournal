@@ -4,16 +4,16 @@ import { useState } from "react";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 export default function ThemeToggle({size}: {size: number}) {
-  const [isDarkMode, setDarkMode] = useState(true);
+  const [isDarkMode, setDarkMode] = useState(true)
 
   const toggleDarkMode = (checked: boolean) => {
-    setDarkMode(checked);
+    setDarkMode(checked)
     if (checked) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add('dark')
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('dark')
     }
-  };
+  }
 
   return (
     <DarkModeSwitch
@@ -22,5 +22,5 @@ export default function ThemeToggle({size}: {size: number}) {
       onChange={toggleDarkMode}
       size={size}
     />
-  );
+  )
 }
