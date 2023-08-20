@@ -6,6 +6,20 @@ import NoScroll from "@/app/components/noscroll"
 import posts from "@/data/posts.json"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 
+export function generateStaticParams() {
+  let name_photos = posts.map(p => {
+    let md = p.post
+    let count = 0
+    md = md.replace(/<Gallery>(.+?)<\/Gallery>/gs, (m, p1) => {
+      let matches = p1.match(/\/content\/albums\/.+/g)
+      count += matches?.length
+      return m
+    })
+    return Array.from(Array(count).keys()).map(i => [p.name, "photo" + i]).push([p.name])
+  })
+  return name_photos.flat()
+}
+
 export default function PostPage({params}: {params: {name: string[]}}) {
   const is_photo = /^photo\d+$/.test(params.name[params.name.length-1])
   if (params.name.length > 2 || (params.name.length == 2 && !is_photo)) {
