@@ -15,9 +15,9 @@ export function generateStaticParams() {
       count += matches?.length
       return m
     })
-    return Array.from(Array(count).keys()).map(i => [p.name, "photo" + i]).push([p.name])
+    return Array.from(Array(count).keys()).map(i => [p.name, "photo" + i]).concat([[p.name]])
   })
-  return name_photos.flat()
+  return name_photos.flat().map(n => ({name: n}))
 }
 
 export default function PostPage({params}: {params: {name: string[]}}) {

@@ -5,6 +5,19 @@ import albums from "@/data/albums.json"
 import Link from "next/link"
 import NoScroll from "@/app/components/noscroll"
 
+export function generateStaticParams() {
+  let name_photos = albums.map(a => {
+    let url_segments = a ? a.url.split("/").slice(2) : []
+    if (a.kind == 1) {
+      return [url_segments]
+    } else {
+      let count = a.images?.length
+      return Array.from(Array(3).keys()).map(i => url_segments.concat("photo" + i)).concat([url_segments])
+    }
+  })
+  return name_photos.flat().map(n => ({path: n}))
+}
+
 export default function AlbumPage({params}: {params: {path: string[]}}) {
   const is_photo = params.path ? /^photo\d+$/.test(params.path[params.path.length-1]) : false
   const params_path = is_photo ? params.path.slice(0, params.path.length-1) : params.path
