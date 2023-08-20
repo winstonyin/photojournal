@@ -1,7 +1,7 @@
 import PostItem from "../components/post-item"
 import posts from "@/data/posts.json"
 
-export default function Posts({params, searchParams}: {params: {path: string[]}, searchParams: {photo: number}}) {
+export default function Posts() {
   return (
     <div className="flex flex-wrap p-3">
     {posts.map((p, i) =>

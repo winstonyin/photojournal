@@ -5,8 +5,10 @@ import albums from "@/data/albums.json"
 import Link from "next/link"
 import NoScroll from "@/app/components/noscroll"
 
-export default function AlbumPage({params, searchParams}: {params: {path: string[]}, searchParams: {photo: number}}) {
-  const album_url = params.path ? "/albums/" + decodeURIComponent(params.path.join("/")) : "/albums"
+export default function AlbumPage({params}: {params: {path: string[]}}) {
+  const is_photo = params.path ? /^photo\d+$/.test(params.path[params.path.length-1]) : false
+  const params_path = is_photo ? params.path.slice(0, params.path.length-1) : params.path
+  const album_url = params_path ? "/albums/" + decodeURIComponent(params_path.join("/")) : "/albums"
   const album_entry = albums.find(a => a.url == album_url)
 
   // format breadcrumb
@@ -48,14 +50,17 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
     let modal = null
     let noscroll = null
     if (contents) {
-      if (searchParams.photo) {
+      if (is_photo) {
         noscroll = <NoScroll noscroll={true} />
-        let prev = searchParams.photo - 1
-        let next = contents.length == +searchParams.photo+1 ? -2 : +searchParams.photo + 1
+        let n_match = params.path[params.path.length-1].match(/\d+/)
+        let n_photo = parseInt(n_match ? n_match[0] : '-1')
+        let prev = n_photo - 1
+        let next = contents.length == +n_photo+1 ? -2 : +n_photo + 1
         let prev_src = prev == -1 ? "" : contents[prev].src
         let next_src = next == -2 ? "" : contents[next].src
         modal = <PhotoModal
-          src={contents[searchParams.photo].src}
+          base_url={album_url}
+          src={contents[n_photo].src}
           prev_src={prev_src}
           next_src={next_src}
           prev={prev}
@@ -73,7 +78,7 @@ export default function AlbumPage({params, searchParams}: {params: {path: string
             ))}
           </div>
           {contents.map((c, i) =>
-            <Photo key={i} src={c.src} url={"?photo=" + i} />
+            <Photo key={i} src={c.src} url={album_url + "/photo" + i} />
           )}
         </div>
         {modal}

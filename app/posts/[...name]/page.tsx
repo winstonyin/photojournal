@@ -6,8 +6,12 @@ import NoScroll from "@/app/components/noscroll"
 import posts from "@/data/posts.json"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 
-export default function PostPage({params, searchParams}: {params: {name: string}, searchParams: {photo: number}}) {
-  const post = posts.find(p => p.name == decodeURIComponent(params.name))
+export default function PostPage({params}: {params: {name: string[]}}) {
+  const is_photo = /^photo\d+$/.test(params.name[params.name.length-1])
+  if (params.name.length > 2 || (params.name.length == 2 && !is_photo)) {
+    return <>URL not found</>
+  }
+  const post = posts.find(p => p.name == decodeURIComponent(params.name[0]))
   if (post) {
     let md = post.post
     let start_key = 0
@@ -22,16 +26,19 @@ export default function PostPage({params, searchParams}: {params: {name: string}
     })
     let modal = null
     let noscroll = null
-    if (searchParams.photo) {
+    if (is_photo) {
       noscroll = <NoScroll noscroll={true} />
-      let prev = searchParams.photo - 1
-      let next = srcs.length == +searchParams.photo+1 ? -2 : +searchParams.photo + 1
+      let n_match = params.name[params.name.length-1].match(/\d+/)
+      let n_photo = parseInt(n_match ? n_match[0] : '-1')
+      let prev = n_photo - 1
+      let next = srcs.length == +n_photo+1 ? -2 : +n_photo + 1
       let prev_src = prev == -1 ? "" : srcs[prev]
       let next_src = next == -2 ? "" : srcs[next]
       modal = <PhotoModal
-        src={srcs[searchParams.photo]}
+        src={srcs[n_photo]}
         prev_src={prev_src}
         next_src={next_src}
+        base_url={"/posts/" + params.name[0]}
         prev={prev}
         next={next}
       />
@@ -64,7 +71,10 @@ export default function PostPage({params, searchParams}: {params: {name: string}
         options={{
           overrides: {
             Gallery: {
-              component: Gallery
+              component: Gallery,
+              props: {
+                base_url: "/posts/" + params.name[0]
+              }
             },
             p: {
               component: "p",

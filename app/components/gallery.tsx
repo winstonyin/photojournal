@@ -1,7 +1,7 @@
 import Photo from "./photo";
 // import albums from "@/data/albums.json"
 
-export default function Gallery({children, start_key}: {children: React.ReactNode, start_key: string}) {
+export default function Gallery({children, start_key, base_url}: {children: React.ReactNode, start_key: string, base_url: string}) {
   // read the children line by line, each should be a path to an image /content/albums/...
   let src_array = children?.toString().split("\n").slice(0, -1) || []
   let photo_array = src_array.map((s, i) => {
@@ -11,7 +11,7 @@ export default function Gallery({children, start_key}: {children: React.ReactNod
     // let photo_entry = album_entry?.images?.find(im => im.src == s)
     // let key = i + props.start_key
     let key = i + parseInt(start_key)
-    return <Photo key={key} src={s} url={"?photo=" + key} />
+    return <Photo key={key} src={s} url={base_url + "/photo" + key} />
   })
 
   return (
