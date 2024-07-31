@@ -1,3 +1,8 @@
+== How to ==
+* npm run prebuild
+* npm run build
+* npm run start
+
 == Site map ==
 * albums (`Albums`)
 ** if folder containing directories only: `FolderPage`
