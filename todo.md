@@ -1,15 +1,74 @@
-== How to ==
+# Photo Journal
+
+## UI structure
+Sitewide:
+* Main
+  * Left vertical navbar
+    * Logo
+    * Albums
+    * Posts
+    * Language toggle
+    * Day/night toggle
+  * Content
+
+Mainpage:
+* Content
+  * Rotating showcase
+    * Individual photo square with info when hovered
+    * ...
+
+Albums:
+* Content
+  * Title (path)
+  * Photo reel
+    * Individual photo square
+    * ...
+
+Posts:
+* Content
+  * Banner
+  * Title
+  * Jump-to-text arrow
+  * Main text
+    * p
+    * ...
+    * Photo gallery
+      * Individual photo square
+      * ...
+    * ...
+
+Lightbox:
+* Screen (darken/blur)
+  * Close
+  * Left arrow
+  * Right arrow
+  * Other controls
+  * Photo
+  * Description
+    * Date/time
+    * Location
+    * Camera info
+    * Linked from
+    * Text description
+
+## Usage
+* Photos are organised in natural directories in the filesystem
+* Settings, custom metadata, posts are stored as text files in the filesystem (markdown? xml?)
+* Command to prebuild/build static site
+* Virtual albums (ones not compiled from a filesystem directory) and posts can soft link to individual photos
+
+## How to
 * npm run prebuild
 * npm run build
 * npm run start
 
-== Site map ==
+## Site map
 * albums (`Albums`)
 ** if folder containing directories only: `FolderPage`
 ** if folder containing images only: `AlbumPage`
 *** `...?photo=n` displays the modal for the n-th photo
 
-== To-do ==
+## To-do
 * ~~Generate config in each folder (album name, cover photo, ordering, photo descriptions)~~
 * ~~Read config from each folder~~
 * ~~Nested folders~~
