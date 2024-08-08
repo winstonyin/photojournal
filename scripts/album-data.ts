@@ -56,7 +56,7 @@ function isImage(d: fs.Dirent) {
 }
 
 async function generateThumbnail(src: string, s: number, fit: keyof sharp.FitEnum, new_path: string) {
-  sharp('./public' + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
+  await sharp('./public' + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
   return {src: src, s: s}
 }
 
