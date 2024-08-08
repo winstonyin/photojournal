@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
+import { AlbumData } from "./album-data"
 import config from "../site-config.json"
-import albums from "../data/albums.json"
 
 function pathToURL(p: string, trim: number) {
   // TODO: consolidate this with the one in album-data.ts
@@ -72,6 +72,7 @@ class Post {
   }
 
   setGalleries() {
+    const albums: AlbumData[] = JSON.parse(fs.readFileSync("./data/albums.json", "utf8"))
     const gallery_regex = new RegExp("<gallery>(.+?)<\/gallery>", "gs")
     this.galleries = []
     // TODO: change replace to match

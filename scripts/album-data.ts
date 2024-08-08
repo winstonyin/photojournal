@@ -4,7 +4,7 @@ import sharp from "sharp"
 import config from "../site-config.json"
 
 // one entry of /data/albums.json
-type AlbumData = {
+export type AlbumData = {
   is_leaf: boolean
   url: string // absolute album path /albums/...
   title: string
