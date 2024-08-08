@@ -66,14 +66,14 @@ async function processImage(src: string) {
   for (let s of config.thumb_sizes) {
     const new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp"
     if (!fs.existsSync(new_path)) {
-      generateThumbnail(src, s, "cover", new_path)
+      await generateThumbnail(src, s, "cover", new_path)
         .then(r => console.log("Generated size " + r.s + "px for " + r.src))
     }
   }
   for (let s of config.full_sizes) {
     const new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp"
     if (!fs.existsSync(new_path)) {
-      generateThumbnail(src, s, "inside", new_path)
+      await generateThumbnail(src, s, "inside", new_path)
         .then(r => console.log("Generated size " + r.s + "px for " + r.src))
     }
   }
@@ -286,7 +286,9 @@ export default class Album {
         await processImage(pathToURL(this.p, 2) + "/" + p)
       }
     } else {
-      this.subalbums?.map(s => s.processPhotos())
+      for (let s of this.subalbums || []) {
+        await s.processPhotos()
+      }
     }
   }
 }
