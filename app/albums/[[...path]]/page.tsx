@@ -37,5 +37,5 @@ export default function AlbumsPage({params}: {params: {path?: string[]}}) {
 
 export function generateStaticParams() {
   const album_paths = albums.map(a => a ? a.url.split("/").slice(2) : [])
-  return album_paths.map(p => ({path: p.map(s => encodeURI(s))}))
+  return album_paths.map(p => ({path: p}))
 }

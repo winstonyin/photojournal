@@ -55,6 +55,6 @@ export default function Post({params}: {params: {slug: string}}) {
 }
 
 export function generateStaticParams() {
-  const slugs = posts.map(p => ({slug: encodeURI(p.slug)}))
+  const slugs = posts.map(p => ({slug: p.slug}))
   return slugs
 }
