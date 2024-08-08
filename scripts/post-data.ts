@@ -82,7 +82,7 @@ class Post {
         const src = pathToURL(config.albums_path, 2) + p2
         const a = albums.find(a => a.url == pathToURL(config.albums_path, 3) + path.dirname(p2))
         const photo = a?.photos?.find((p: {src: string, desc: string}) => p.src == src) || {src: "", desc: ""}
-        gallery.push({src: src, desc: photo?.desc || ""})
+        gallery.push({src: src, desc: photo.desc || ""})
         return ""
       })
       this.galleries.push(gallery)
