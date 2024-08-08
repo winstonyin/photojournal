@@ -78,25 +78,43 @@ function processImage(src) {
     return __awaiter(this, void 0, void 0, function () {
         var base_path, ext, _i, _a, s, new_path, _b, _c, s, new_path;
         return __generator(this, function (_d) {
-            base_path = "./public/img" + pathToURL(src, 3);
-            ext = path_1.default.extname(base_path);
-            for (_i = 0, _a = site_config_json_1.default.thumb_sizes; _i < _a.length; _i++) {
-                s = _a[_i];
-                new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp";
-                if (!fs_1.default.existsSync(new_path)) {
-                    generateThumbnail(src, s, "cover", new_path)
-                        .then(function (r) { return console.log("Generated size " + r.s + "px for " + r.src); });
-                }
+            switch (_d.label) {
+                case 0:
+                    base_path = "./public/img" + pathToURL(src, 3);
+                    ext = path_1.default.extname(base_path);
+                    _i = 0, _a = site_config_json_1.default.thumb_sizes;
+                    _d.label = 1;
+                case 1:
+                    if (!(_i < _a.length)) return [3 /*break*/, 4];
+                    s = _a[_i];
+                    new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp";
+                    if (!!fs_1.default.existsSync(new_path)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, generateThumbnail(src, s, "cover", new_path)
+                            .then(function (r) { return console.log("Generated size " + r.s + "px for " + r.src); })];
+                case 2:
+                    _d.sent();
+                    _d.label = 3;
+                case 3:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 4:
+                    _b = 0, _c = site_config_json_1.default.full_sizes;
+                    _d.label = 5;
+                case 5:
+                    if (!(_b < _c.length)) return [3 /*break*/, 8];
+                    s = _c[_b];
+                    new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp";
+                    if (!!fs_1.default.existsSync(new_path)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, generateThumbnail(src, s, "inside", new_path)
+                            .then(function (r) { return console.log("Generated size " + r.s + "px for " + r.src); })];
+                case 6:
+                    _d.sent();
+                    _d.label = 7;
+                case 7:
+                    _b++;
+                    return [3 /*break*/, 5];
+                case 8: return [2 /*return*/];
             }
-            for (_b = 0, _c = site_config_json_1.default.full_sizes; _b < _c.length; _b++) {
-                s = _c[_b];
-                new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp";
-                if (!fs_1.default.existsSync(new_path)) {
-                    generateThumbnail(src, s, "inside", new_path)
-                        .then(function (r) { return console.log("Generated size " + r.s + "px for " + r.src); });
-                }
-            }
-            return [2 /*return*/];
         });
     });
 }
@@ -301,31 +319,40 @@ var Album = /** @class */ (function () {
     };
     Album.prototype.processPhotos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _i, _a, p;
-            var _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _i, _a, p, _b, _c, s;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         if (!this.is_leaf) return [3 /*break*/, 5];
                         // TODO: detect changes to contents
                         fs_1.default.mkdirSync('./public/img/' + pathToURL(this.p, 4), { recursive: true });
                         _i = 0, _a = this.photos || [];
-                        _c.label = 1;
+                        _d.label = 1;
                     case 1:
                         if (!(_i < _a.length)) return [3 /*break*/, 4];
                         p = _a[_i];
                         return [4 /*yield*/, processImage(pathToURL(this.p, 2) + "/" + p)];
                     case 2:
-                        _c.sent();
-                        _c.label = 3;
+                        _d.sent();
+                        _d.label = 3;
                     case 3:
                         _i++;
                         return [3 /*break*/, 1];
-                    case 4: return [3 /*break*/, 6];
+                    case 4: return [3 /*break*/, 9];
                     case 5:
-                        (_b = this.subalbums) === null || _b === void 0 ? void 0 : _b.map(function (s) { return s.processPhotos(); });
-                        _c.label = 6;
-                    case 6: return [2 /*return*/];
+                        _b = 0, _c = this.subalbums || [];
+                        _d.label = 6;
+                    case 6:
+                        if (!(_b < _c.length)) return [3 /*break*/, 9];
+                        s = _c[_b];
+                        return [4 /*yield*/, s.processPhotos()];
+                    case 7:
+                        _d.sent();
+                        _d.label = 8;
+                    case 8:
+                        _b++;
+                        return [3 /*break*/, 6];
+                    case 9: return [2 /*return*/];
                 }
             });
         });
