@@ -81,7 +81,7 @@ class Post {
       p1.replace(/^(\*|)(\/.+)/gm, (_0, _1, p2) => {
         const src = pathToURL(config.albums_path, 2) + p2
         const a = albums.find(a => a.url == pathToURL(config.albums_path, 3) + path.dirname(p2))
-        const photo = a?.photos?.find(p => p.src == src)
+        const photo = a?.photos?.find((p: {src: string, desc: string}) => p.src == src)
         gallery.push({src: src, desc: photo?.desc || ""})
         return ""
       })
