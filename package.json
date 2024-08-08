@@ -2,46 +2,30 @@
   "name": "photojournal",
   "version": "0.1.0",
   "private": true,
-  "description": "A modern lightweight static photo journal website",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prebuild": "node ./prebuild/prebuild.jsx",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "process": "node ./scripts/process.js",
+    "prebuild": "node ./scripts/prebuild.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/winstonyin/photojournal.git"
-  },
-  "keywords": [
-    "photo",
-    "photography",
-    "journal",
-    "blog"
-  ],
-  "author": "Winston Yin",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/winstonyin/photojournal/issues"
-  },
-  "homepage": "https://github.com/winstonyin/photojournal#readme",
   "dependencies": {
-    "@heroicons/react": "^2.0.18",
-    "@types/node": "20.4.3",
-    "@types/react": "18.2.15",
-    "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.14",
-    "eslint": "8.45.0",
-    "eslint-config-next": "13.4.12",
-    "markdown-to-jsx": "^7.2.1",
-    "next": "13.4.12",
-    "postcss": "8.4.27",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-toggle-dark-mode": "^1.1.1",
-    "sharp": "^0.32.4",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "@heroicons/react": "^2.1.5",
+    "markdown-to-jsx": "^7.4.7",
+    "next": "14.2.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

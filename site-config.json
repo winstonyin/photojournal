@@ -1,0 +1,13 @@
+{
+  "title": "Photo Journal",
+  "description": "A static photography journal site",
+  "logo": {
+    "src": "/icon.png",
+    "alt": "Yin"
+  },
+  "albums_path": "./public/content/albums",
+  "posts_path": "./public/content/posts",
+  "img_path": "./public/img",
+  "thumb_sizes": [320, 640],
+  "full_sizes": [1200, 2048]
+}

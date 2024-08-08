@@ -1,20 +1,22 @@
-import PostItem from "../components/post-item"
 import posts from "@/data/posts.json"
+import PostItem from "../components/post-item"
 
-export default function Posts() {
+export default function PostsPage() {
+  const post_items = posts.map((p, i) =>
+    <PostItem
+      key={i}
+      url={"/posts/" + p.slug}
+      title={p.title}
+      date={p.date}
+      cover={p.cover}
+      count={p.count}
+      blurb={p.blurb}
+    />
+  )
+
   return (
     <div className="flex flex-wrap p-3">
-    {posts.map((p, i) =>
-      <PostItem
-        key={i}
-        href={"posts/" + p.name}
-        title={p.title}
-        date={p.date}
-        featured={p.featured}
-        n_photos={p.n_photos}
-        blurb={p.blurb}
-      />
-    )}
+      {post_items}
     </div>
   )
 }

@@ -1,3 +1,5 @@
+# Photo Journal
+
 ## Features
 * Nested albums to showcase your photography
 * Journal website with text posts interspersed with images
@@ -12,3 +14,8 @@
 * Image analysis or auto-tagging
 * AI
 * Videos
+
+## How to
+* npm run prebuild <-- TODO: this has several steps
+* npm run build
+* npm run start
