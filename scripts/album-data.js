@@ -65,8 +65,12 @@ function isImage(d) {
 function generateThumbnail(src, s, fit, new_path) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            (0, sharp_1.default)('./public' + src).resize(s, s, { fit: fit }).webp().toFile(new_path);
-            return [2 /*return*/, { src: src, s: s }];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, (0, sharp_1.default)('./public' + src).resize(s, s, { fit: fit }).webp().toFile(new_path)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, { src: src, s: s }];
+            }
         });
     });
 }
