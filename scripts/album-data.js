@@ -377,7 +377,7 @@ function removeOrphans(p) {
                 }
             }
             if (!master_exists) {
-                // fs.rmSync(c.parentPath + "/" + c.name)
+                fs_1.default.rmSync(c.parentPath + "/" + c.name);
                 console.log('Deleted orphaned thumbnail ' + c.parentPath + "/" + c.name);
             }
         });
@@ -387,7 +387,7 @@ function removeOrphans(p) {
     }
     var new_contents = fs_1.default.readdirSync(p, { withFileTypes: true });
     if ((new_contents.filter(function (c) { return c.isDirectory(); }).length + new_contents.filter(isImage).length) == 0) {
-        // fs.rmSync(p, {recursive: true})
+        fs_1.default.rmSync(p, { recursive: true });
         console.log('Deleted orphaned directory ' + p);
     }
 }

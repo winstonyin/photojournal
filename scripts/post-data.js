@@ -7,7 +7,6 @@ exports.default = compilePosts;
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var site_config_json_1 = __importDefault(require("../site-config.json"));
-var albums_json_1 = __importDefault(require("../data/albums.json"));
 function pathToURL(p, trim) {
     // TODO: consolidate this with the one in album-data.ts
     // assumes ./public/content/albums/[more_path]
@@ -71,6 +70,7 @@ var Post = /** @class */ (function () {
     };
     Post.prototype.setGalleries = function () {
         var _this = this;
+        var albums = JSON.parse(fs_1.default.readFileSync("./data/albums.json", "utf8"));
         var gallery_regex = new RegExp("<gallery>(.+?)<\/gallery>", "gs");
         this.galleries = [];
         // TODO: change replace to match
@@ -80,9 +80,9 @@ var Post = /** @class */ (function () {
             p1.replace(/^(\*|)(\/.+)/gm, function (_0, _1, p2) {
                 var _a;
                 var src = pathToURL(site_config_json_1.default.albums_path, 2) + p2;
-                var a = albums_json_1.default.find(function (a) { return a.url == pathToURL(site_config_json_1.default.albums_path, 3) + path_1.default.dirname(p2); });
-                var photo = (_a = a === null || a === void 0 ? void 0 : a.photos) === null || _a === void 0 ? void 0 : _a.find(function (p) { return p.src == src; });
-                gallery.push({ src: src, desc: (photo === null || photo === void 0 ? void 0 : photo.desc) || "" });
+                var a = albums.find(function (a) { return a.url == pathToURL(site_config_json_1.default.albums_path, 3) + path_1.default.dirname(p2); });
+                var photo = ((_a = a === null || a === void 0 ? void 0 : a.photos) === null || _a === void 0 ? void 0 : _a.find(function (p) { return p.src == src; })) || { src: "", desc: "" };
+                gallery.push({ src: src, desc: photo.desc || "" });
                 return "";
             });
             _this.galleries.push(gallery);

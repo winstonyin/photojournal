@@ -309,7 +309,7 @@ export function removeOrphans(p: string) {
         }
       }
       if (!master_exists) {
-        // fs.rmSync(c.parentPath + "/" + c.name)
+        fs.rmSync(c.parentPath + "/" + c.name)
         console.log('Deleted orphaned thumbnail ' + c.parentPath + "/" + c.name)
       }
     })
@@ -318,7 +318,7 @@ export function removeOrphans(p: string) {
   }
   const new_contents = fs.readdirSync(p, {withFileTypes: true})
   if ((new_contents.filter(c => c.isDirectory()).length + new_contents.filter(isImage).length) == 0) {
-    // fs.rmSync(p, {recursive: true})
+    fs.rmSync(p, {recursive: true})
     console.log('Deleted orphaned directory ' + p)
   }
 }
