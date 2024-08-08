@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import sharp from "sharp"
 import config from "../site-config.json"
+import { isRedirectError } from "next/dist/client/components/redirect"
 
 // one entry of /data/albums.json
 export type AlbumData = {
@@ -59,21 +60,21 @@ async function generateThumbnail(src: string, s: number, fit: keyof sharp.FitEnu
   return {src: src, s: s}
 }
 
-function processImage(src: string) {
-  const base_path = './public/img' + pathToURL(src, 3)
+async function processImage(src: string) {
+  const base_path = "./public/img" + pathToURL(src, 3)
   const ext = path.extname(base_path)
   for (let s of config.thumb_sizes) {
-    const new_path = base_path.substring(0, base_path.length - ext.length) + '-' + s + '.webp'
+    const new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp"
     if (!fs.existsSync(new_path)) {
-      generateThumbnail(src, s, 'cover', new_path)
-        .then(r => console.log('Generated size ' + r.s + 'px for ' + r.src))
+      await generateThumbnail(src, s, "cover", new_path)
+        .then(r => console.log("Generated size " + r.s + "px for " + r.src))
     }
   }
   for (let s of config.full_sizes) {
-    const new_path = base_path.substring(0, base_path.length - ext.length) + '-' + s + '.webp'
+    const new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp"
     if (!fs.existsSync(new_path)) {
-      generateThumbnail(src, s, 'inside', new_path)
-        .then(r => console.log('Generated size ' + r.s + 'px for ' + r.src))
+      await generateThumbnail(src, s, "inside", new_path)
+        .then(r => console.log("Generated size " + r.s + "px for " + r.src))
     }
   }
 }
@@ -87,7 +88,7 @@ export default class Album {
   p: string // path ./public/content/albums/...
   is_leaf: boolean
   subalbums?: Album[] // from filesystem
-  photos?: string[] // from filesystem
+  photos?: string[] // from filesystem, just the filenames
   album_config?: AlbumConfig // read from config file
   // to be computed recursively after reading config
   cover: string = ""
@@ -103,7 +104,7 @@ export default class Album {
     const contents = fs.readdirSync(p, {withFileTypes: true}).sort(sortFiles)
     this.is_leaf = isLeaf(contents)
     if (this.is_leaf) {
-      const images = contents.filter(c => isImage(c))
+      const images = contents.filter(isImage)
       this.photos = images.map(i => i.name)
     } else {
       const dirs = contents.filter(c => c.isDirectory())
@@ -276,16 +277,44 @@ export default class Album {
     return albums
   }
 
-  processPhotos() {
+  async processPhotos() {
     // recursive
     if (this.is_leaf) {
       // TODO: detect changes to contents
       fs.mkdirSync('./public/img/' + pathToURL(this.p, 4), {recursive: true})
-      if (this.album_config?.photos) {
-        this.album_config.photos.map(p => processImage(pathToURL(this.p, 2) + "/" + p.filename))
-      }
+      this.photos?.map(p => processImage(pathToURL(this.p, 2) + "/" + p))
     } else {
-      this.processPhotos()
+      this.subalbums?.map(s => s.processPhotos())
     }
+  }
+}
+
+export function removeOrphans(p: string) {
+  // recursive
+  // make sure thumbnails / directories have counterparts in /content/albums/
+  const contents = fs.readdirSync(p, {withFileTypes: true})
+  const is_leaf = isLeaf(contents)
+  if (is_leaf) {
+    contents.filter(isImage).map(c => {
+      const master_file_sans_ext = config.albums_path + pathToURL(c.parentPath, 3) + "/" + c.name.substring(0, c.name.lastIndexOf("-"))
+      let master_exists = false
+      for (let ext of ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP']) {
+        if (fs.existsSync(master_file_sans_ext + ext)) {
+          master_exists = true
+          break
+        }
+      }
+      if (!master_exists) {
+        // fs.rmSync(c.parentPath + "/" + c.name)
+        console.log('Deleted orphaned thumbnail ' + c.parentPath + "/" + c.name)
+      }
+    })
+  } else {
+    contents.filter(c => c.isDirectory()).map(c => removeOrphans(c.parentPath + "/" + c.name))
+  }
+  const new_contents = fs.readdirSync(p, {withFileTypes: true})
+  if ((new_contents.filter(c => c.isDirectory()).length + new_contents.filter(isImage).length) == 0) {
+    // fs.rmSync(p, {recursive: true})
+    console.log('Deleted orphaned directory ' + p)
   }
 }

@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.removeOrphans = removeOrphans;
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var sharp_1 = __importDefault(require("sharp"));
@@ -74,24 +75,48 @@ function generateThumbnail(src, s, fit, new_path) {
     });
 }
 function processImage(src) {
-    var base_path = './public/img' + pathToURL(src, 3);
-    var ext = path_1.default.extname(base_path);
-    for (var _i = 0, _a = site_config_json_1.default.thumb_sizes; _i < _a.length; _i++) {
-        var s = _a[_i];
-        var new_path = base_path.substring(0, base_path.length - ext.length) + '-' + s + '.webp';
-        if (!fs_1.default.existsSync(new_path)) {
-            generateThumbnail(src, s, 'cover', new_path)
-                .then(function (r) { return console.log('Generated size ' + r.s + 'px for ' + r.src); });
-        }
-    }
-    for (var _b = 0, _c = site_config_json_1.default.full_sizes; _b < _c.length; _b++) {
-        var s = _c[_b];
-        var new_path = base_path.substring(0, base_path.length - ext.length) + '-' + s + '.webp';
-        if (!fs_1.default.existsSync(new_path)) {
-            generateThumbnail(src, s, 'inside', new_path)
-                .then(function (r) { return console.log('Generated size ' + r.s + 'px for ' + r.src); });
-        }
-    }
+    return __awaiter(this, void 0, void 0, function () {
+        var base_path, ext, _i, _a, s, new_path, _b, _c, s, new_path;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    base_path = "./public/img" + pathToURL(src, 3);
+                    ext = path_1.default.extname(base_path);
+                    _i = 0, _a = site_config_json_1.default.thumb_sizes;
+                    _d.label = 1;
+                case 1:
+                    if (!(_i < _a.length)) return [3 /*break*/, 4];
+                    s = _a[_i];
+                    new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp";
+                    if (!!fs_1.default.existsSync(new_path)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, generateThumbnail(src, s, "cover", new_path)
+                            .then(function (r) { return console.log("Generated size " + r.s + "px for " + r.src); })];
+                case 2:
+                    _d.sent();
+                    _d.label = 3;
+                case 3:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 4:
+                    _b = 0, _c = site_config_json_1.default.full_sizes;
+                    _d.label = 5;
+                case 5:
+                    if (!(_b < _c.length)) return [3 /*break*/, 8];
+                    s = _c[_b];
+                    new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp";
+                    if (!!fs_1.default.existsSync(new_path)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, generateThumbnail(src, s, "inside", new_path)
+                            .then(function (r) { return console.log("Generated size " + r.s + "px for " + r.src); })];
+                case 6:
+                    _d.sent();
+                    _d.label = 7;
+                case 7:
+                    _b++;
+                    return [3 /*break*/, 5];
+                case 8: return [2 /*return*/];
+            }
+        });
+    });
 }
 var sortAlphaNum = function (a, b) { return a.localeCompare(b, "en", { numeric: true }); };
 var sortFiles = function (a, b) { return sortAlphaNum(a.name, b.name); };
@@ -109,7 +134,7 @@ var Album = /** @class */ (function () {
         var contents = fs_1.default.readdirSync(p, { withFileTypes: true }).sort(sortFiles);
         this.is_leaf = isLeaf(contents);
         if (this.is_leaf) {
-            var images = contents.filter(function (c) { return isImage(c); });
+            var images = contents.filter(isImage);
             this.photos = images.map(function (i) { return i.name; });
         }
         else {
@@ -293,20 +318,54 @@ var Album = /** @class */ (function () {
         return albums;
     };
     Album.prototype.processPhotos = function () {
-        var _this = this;
-        var _a;
-        // recursive
-        if (this.is_leaf) {
-            // TODO: detect changes to contents
-            fs_1.default.mkdirSync('./public/img/' + pathToURL(this.p, 4), { recursive: true });
-            if ((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.photos) {
-                this.album_config.photos.map(function (p) { return processImage(pathToURL(_this.p, 2) + "/" + p.filename); });
-            }
-        }
-        else {
-            this.processPhotos();
-        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            var _a, _b;
+            return __generator(this, function (_c) {
+                // recursive
+                if (this.is_leaf) {
+                    // TODO: detect changes to contents
+                    fs_1.default.mkdirSync('./public/img/' + pathToURL(this.p, 4), { recursive: true });
+                    (_a = this.photos) === null || _a === void 0 ? void 0 : _a.map(function (p) { return processImage(pathToURL(_this.p, 2) + "/" + p); });
+                }
+                else {
+                    (_b = this.subalbums) === null || _b === void 0 ? void 0 : _b.map(function (s) { return s.processPhotos(); });
+                }
+                return [2 /*return*/];
+            });
+        });
     };
     return Album;
 }());
 exports.default = Album;
+function removeOrphans(p) {
+    // recursive
+    // make sure thumbnails / directories have counterparts in /content/albums/
+    var contents = fs_1.default.readdirSync(p, { withFileTypes: true });
+    var is_leaf = isLeaf(contents);
+    if (is_leaf) {
+        contents.filter(isImage).map(function (c) {
+            var master_file_sans_ext = site_config_json_1.default.albums_path + pathToURL(c.parentPath, 3) + "/" + c.name.substring(0, c.name.lastIndexOf("-"));
+            var master_exists = false;
+            for (var _i = 0, _a = ['.jpg', '.JPG', '.png', '.PNG', '.webp', '.WEBP']; _i < _a.length; _i++) {
+                var ext = _a[_i];
+                if (fs_1.default.existsSync(master_file_sans_ext + ext)) {
+                    master_exists = true;
+                    break;
+                }
+            }
+            if (!master_exists) {
+                // fs.rmSync(c.parentPath + "/" + c.name)
+                console.log('Deleted orphaned thumbnail ' + c.parentPath + "/" + c.name);
+            }
+        });
+    }
+    else {
+        contents.filter(function (c) { return c.isDirectory(); }).map(function (c) { return removeOrphans(c.parentPath + "/" + c.name); });
+    }
+    var new_contents = fs_1.default.readdirSync(p, { withFileTypes: true });
+    if ((new_contents.filter(function (c) { return c.isDirectory(); }).length + new_contents.filter(isImage).length) == 0) {
+        // fs.rmSync(p, {recursive: true})
+        console.log('Deleted orphaned directory ' + p);
+    }
+}
