@@ -56,7 +56,7 @@ function isImage(d: fs.Dirent) {
 }
 
 async function generateThumbnail(src: string, s: number, fit: keyof sharp.FitEnum, new_path: string) {
-  await sharp('./public' + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
+  sharp('./public' + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
   return {src: src, s: s}
 }
 
@@ -66,14 +66,14 @@ async function processImage(src: string) {
   for (let s of config.thumb_sizes) {
     const new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp"
     if (!fs.existsSync(new_path)) {
-      await generateThumbnail(src, s, "cover", new_path)
+      generateThumbnail(src, s, "cover", new_path)
         .then(r => console.log("Generated size " + r.s + "px for " + r.src))
     }
   }
   for (let s of config.full_sizes) {
     const new_path = base_path.substring(0, base_path.length - ext.length) + "-" + s + ".webp"
     if (!fs.existsSync(new_path)) {
-      await generateThumbnail(src, s, "inside", new_path)
+      generateThumbnail(src, s, "inside", new_path)
         .then(r => console.log("Generated size " + r.s + "px for " + r.src))
     }
   }
@@ -282,7 +282,9 @@ export default class Album {
     if (this.is_leaf) {
       // TODO: detect changes to contents
       fs.mkdirSync('./public/img/' + pathToURL(this.p, 4), {recursive: true})
-      this.photos?.map(p => processImage(pathToURL(this.p, 2) + "/" + p))
+      for (let p of this.photos || []) {
+        await processImage(pathToURL(this.p, 2) + "/" + p)
+      }
     } else {
       this.subalbums?.map(s => s.processPhotos())
     }
