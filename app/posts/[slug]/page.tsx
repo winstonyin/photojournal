@@ -22,7 +22,7 @@ export default function Post({params}: {params: {slug: string}}) {
             />
           </div>
         </div>
-        <div className="absolute bottom-0 w-full h-64 bg-gradient-to-b from-transparent via-gray-100 to-gray-100 dark:via-gray-800 dark:to-gray-800"></div>
+        <div className="absolute bottom-0 w-full h-64 bg-gradient-to-b from-transparent via-gray-800 to-gray-800"></div>
         <h1 className="absolute bottom-12 left-0 right-0 text-6xl text-center font-thin">{post.title}</h1>
         <div className="absolute bottom-0 left-0 right-0 text-gray-500">
           <ChevronDownIcon className="w-10 h-10 mx-auto"/>
