@@ -13,7 +13,7 @@ export default function PartialPhotoGallery({galleries, id}: {
   const photos = galleries[id]
   const photo_items = photos.map((s, i) =>
     <div key={i + start_key} className="relative inline-block overflow-visible hover:overflow-visible w-48 h-48 m-0.5 bg-gray-500 justify-center align-middle hover:scale-[1.03] transition-transform">
-      <ModalLink photos={galleries.flat()} id={i + start_key}>
+      <ModalLink id={i + start_key}>
         <Image
           src={imageSize(s.src, 192)}
           alt="photo"

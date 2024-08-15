@@ -3,14 +3,13 @@
 import { useContext } from "react"
 import { ModalContext } from "./modal-context"
 
-export default function ModalLink({id, photos, children}: {
+export default function ModalLink({id, children}: {
   id: number,
-  photos: {src: string, desc: string}[],
   children: React.ReactNode}) {
   const {state: modal_data, setState: setModalData} = useContext(ModalContext)
   const openModal = () => setModalData({
     show: true,
-    photos: photos,
+    photos: modal_data.photos,
     active: id
   }) // TODO: consolidate openModal and closeModal at the wrapper level
 

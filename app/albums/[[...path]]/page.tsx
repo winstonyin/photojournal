@@ -1,6 +1,7 @@
 import AlbumGallery from "@/app/components/album-gallery";
 import Breadcrumb from "@/app/components/breadcrumb";
 import PhotoGallery from "@/app/components/photo-gallery";
+import SlideshowSetter from "@/app/components/slideshow-setter";
 import albums from "@/data/albums.json"
 
 export default function AlbumsPage({params}: {params: {path?: string[]}}) {
@@ -13,10 +14,12 @@ export default function AlbumsPage({params}: {params: {path?: string[]}}) {
   const album_data = albums.find(a => a.url == album_url)
   const is_leaf = album_data?.is_leaf; // false for dir of dirs, true for dir of photos
   const gallery = is_leaf ? (
-    <PhotoGallery
-      photos={album_data?.photos || []}
-      start_key={0}
-    />
+    <SlideshowSetter photos={album_data?.photos || []}>
+      <PhotoGallery
+        photos={album_data?.photos || []}
+        start_key={0}
+      />
+    </SlideshowSetter>
   ) : (
     <AlbumGallery
       albums={album_data?.subalbums || []}
