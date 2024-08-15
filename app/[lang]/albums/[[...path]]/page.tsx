@@ -3,8 +3,9 @@ import Breadcrumb from "@/app/[lang]/components/breadcrumb";
 import PhotoGallery from "@/app/[lang]/components/photo-gallery";
 import SlideshowSetter from "@/app/[lang]/components/slideshow-setter";
 import albums from "@/data/albums.json"
+import config from "@/site-config.json"
 
-export default function AlbumsPage({params}: {params: {path?: string[]}}) {
+export default function AlbumsPage({params}: {params: {lang: string, path?: string[]}}) {
   /*
   This is the main navigation for photo albums. The two main UI modes are
   album mode (for viewing a directory of directories only) and gallery mode
@@ -40,5 +41,5 @@ export default function AlbumsPage({params}: {params: {path?: string[]}}) {
 
 export function generateStaticParams() {
   const album_paths = albums.map(a => a ? a.url.split("/").slice(2) : [])
-  return album_paths.map(p => ({path: p}))
+  return album_paths.map(p => config.locales.map(l => ({lang: l, path: p}))).flat()
 }

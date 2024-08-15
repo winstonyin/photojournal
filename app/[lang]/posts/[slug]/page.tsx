@@ -4,8 +4,9 @@ import PartialPhotoGallery from "@/app/[lang]/components/partial-photo-gallery"
 import SlideshowSetter from "@/app/[lang]/components/slideshow-setter"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 import posts from "@/data/posts.json"
+import config from "@/site-config.json"
 
-export default function Post({params}: {params: {slug: string}}) {
+export default function Post({params}: {params: {lang: string, slug: string}}) {
   const post = posts.find(p => p.slug == decodeURIComponent(params.slug)) ||
     {slug: "", title: "", date: "", cover: "", count: "", blurb: "", post: "", galleries: []}
 
@@ -15,7 +16,7 @@ export default function Post({params}: {params: {slug: string}}) {
         <div className="absolute w-full h-[calc(100%-8rem)]">
           <div className="relative w-full h-full">
             <Image
-              src={post.cover}
+              src={post.cover} // TODO: this currently loads the FULL master image
               alt="cover photo"
               fill
               className="object-cover -z-10"
@@ -56,6 +57,6 @@ export default function Post({params}: {params: {slug: string}}) {
 }
 
 export function generateStaticParams() {
-  const slugs = posts.map(p => ({slug: p.slug}))
+  const slugs = posts.map(p => config.locales.map(l => ({lang: l, slug: p.slug}))).flat()
   return slugs
 }

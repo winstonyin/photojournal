@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   description: config.description
 }
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({params, children}: {params: {lang: string}, children: React.ReactNode}) {
   return (
-    <html lang="en">
+    <html lang={params.lang}>
       <link
         rel="icon"
         href="/icon.png"

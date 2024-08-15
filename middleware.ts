@@ -29,8 +29,8 @@ export function middleware(request: NextRequest) {
  
 export const config = {
   matcher: [
-    // Skip all internal paths (_next) and images (img) and icon.png
-    '/((?!_next|img|icon\.png).*)',
+    // Skip all internal paths (_next) and images (img, content) and icon.png
+    '/((?!_next|img|content|icon\.png).*)',
     // Optional: only run on root (/) URL
     // '/'
   ],
