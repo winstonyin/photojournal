@@ -120,6 +120,19 @@ function processImage(src) {
 }
 var sortAlphaNum = function (a, b) { return a.localeCompare(b, "en", { numeric: true }); };
 var sortFiles = function (a, b) { return sortAlphaNum(a.name, b.name); };
+function translate(t) {
+    // t returns the translated string corresponding to the i-th locale
+    return site_config_json_1.default.locales.map(function (l, i) { return [l, t(i)]; }).reduce(function (acc, _a) {
+        var key = _a[0], value = _a[1];
+        acc[key] = value;
+        return acc;
+    }, {});
+}
+function defaultLanguageIfEmpty(dict) {
+    return translate(function (i) {
+        return i == 0 ? dict[site_config_json_1.default.locales[0]] : (dict[site_config_json_1.default.locales[i]] == "" ? dict[site_config_json_1.default.locales[0]] : dict[site_config_json_1.default.locales[i]]);
+    });
+}
 var Album = /** @class */ (function () {
     function Album(p) {
         // to be computed recursively after reading config
@@ -185,17 +198,26 @@ var Album = /** @class */ (function () {
         return true;
     };
     Album.prototype.writeConfig = function (filename) {
+        var _this = this;
         var album_config;
         if (this.is_leaf) {
             album_config = {
-                title: this.p == site_config_json_1.default.albums_path ? "All Photos" : path_1.default.basename(this.p),
+                title: translate(function (i) {
+                    return _this.p == site_config_json_1.default.albums_path ? site_config_json_1.default.t_all_photos[i] : (
+                    // default to directory name for default locale, empty string otherwise
+                    i == 0 ? path_1.default.basename(_this.p) : "");
+                }),
                 cover: "",
-                photos: this.photos ? this.photos.map(function (p) { return ({ filename: p, desc: "" }); }) : []
+                photos: this.photos ? this.photos.map(function (p) { return ({ filename: p, desc: translate(function (i) { return ""; }) }); }) : []
             };
         }
         else {
             album_config = {
-                title: this.p == site_config_json_1.default.albums_path ? "All Albums" : path_1.default.basename(this.p),
+                title: translate(function (i) {
+                    return _this.p == site_config_json_1.default.albums_path ? site_config_json_1.default.t_all_albums[i] : (
+                    // default to directory name for default locale, empty string otherwise
+                    i == 0 ? path_1.default.basename(_this.p) : "");
+                }),
                 cover: "",
                 subalbums: this.subalbums ? this.subalbums.map(function (s) { return path_1.default.basename(s.p); }) : []
             };
@@ -217,15 +239,33 @@ var Album = /** @class */ (function () {
         }
         this.album_config = JSON.parse(fs_1.default.readFileSync(this.p + "/config.json", "utf8"));
     };
-    Album.prototype.setBreadcrumb = function () {
-        var _a;
+    Album.prototype.setTitle = function () {
         // recursive
+        // use default language title if empty
+        if (this.album_config) {
+            this.album_config.title = defaultLanguageIfEmpty(this.album_config.title);
+        }
         if (this.is_leaf) {
         }
         else {
-            for (var _i = 0, _b = this.subalbumsFromConfig(); _i < _b.length; _i++) {
-                var s = _b[_i];
-                s.breadcrumb = this.breadcrumb.concat([((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.title) || ""]);
+            for (var _i = 0, _a = this.subalbums || []; _i < _a.length; _i++) {
+                var s = _a[_i];
+                s.setTitle();
+            }
+        }
+    };
+    Album.prototype.setBreadcrumb = function () {
+        var _this = this;
+        // recursive
+        // run after this.setTitle
+        if (this.is_leaf) {
+        }
+        else {
+            for (var _i = 0, _a = this.subalbumsFromConfig(); _i < _a.length; _i++) {
+                var s = _a[_i];
+                s.breadcrumb = this.breadcrumb.concat([
+                    translate(function (i) { var _a; return ((_a = _this.album_config) === null || _a === void 0 ? void 0 : _a.title[site_config_json_1.default.locales[i]]) || ""; })
+                ]);
                 s.setBreadcrumb();
             }
         }
@@ -281,7 +321,7 @@ var Album = /** @class */ (function () {
         var album_data = {
             is_leaf: this.is_leaf,
             url: pathToURL(this.p, 3),
-            title: ((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.title) || "",
+            title: ((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.title) || {},
             breadcrumb: this.breadcrumb,
         };
         if (this.is_leaf) {
@@ -296,7 +336,7 @@ var Album = /** @class */ (function () {
                 var _a;
                 return ({
                     url: pathToURL((s === null || s === void 0 ? void 0 : s.p) || "", 3),
-                    title: ((_a = s === null || s === void 0 ? void 0 : s.album_config) === null || _a === void 0 ? void 0 : _a.title) || "",
+                    title: ((_a = s === null || s === void 0 ? void 0 : s.album_config) === null || _a === void 0 ? void 0 : _a.title) || {},
                     cover: (s === null || s === void 0 ? void 0 : s.cover) || "",
                     count: (s === null || s === void 0 ? void 0 : s.count) || 0
                 });

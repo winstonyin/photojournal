@@ -2,35 +2,34 @@ import fs from "fs"
 import path from "path"
 import sharp from "sharp"
 import config from "../site-config.json"
-import { isRedirectError } from "next/dist/client/components/redirect"
 
 // one entry of /data/albums.json
 export type AlbumData = {
   is_leaf: boolean
   url: string // absolute album path /albums/...
-  title: string
-  breadcrumb: string[] // titles of parents
+  title: {[locale: string]: string}
+  breadcrumb: {[locale: string]: string}[] // titles of parents
   // cover: string // absolute photo src /content/albums/...
   subalbums?: {
     url: string // absolute album path /albums/...
-    title: string
+    title: {[locale: string]: string}
     cover: string // absolute photo src /content/albums/...
     count: number
   }[]
   photos?: {
     src: string
-    desc: string
+    desc: {[locale: string]: string}
     // hidden?: boolean
   }[]
 }
 
 // content of config.json in each subdirectory
 type AlbumConfig = {
-  title: string
+  title: {[locale: string]: string}
   cover: string // relative path to cover photo or ""
   photos?: {
     filename: string,
-    desc: string
+    desc: {[locale: string]: string}
   }[]
   subalbums?: string[]
 }
@@ -82,6 +81,22 @@ async function processImage(src: string) {
 const sortAlphaNum = (a: string, b: string) => a.localeCompare(b, "en", {numeric: true})
 const sortFiles = (a: fs.Dirent, b: fs.Dirent) => sortAlphaNum(a.name, b.name)
 
+function translate(t: (i: number) => string) {
+  // t returns the translated string corresponding to the i-th locale
+  return config.locales.map((l, i) => [l, t(i)]).reduce((acc, [key, value]) => {
+    acc[key] = value
+    return acc
+  }, {} as {[locale: string]: string})
+}
+
+function defaultLanguageIfEmpty(dict: {[locale: string]: string}) {
+  return translate(i =>
+    i == 0 ? dict[config.locales[0]] : (
+      dict[config.locales[i]] == "" ? dict[config.locales[0]] : dict[config.locales[i]]
+    )
+  )
+}
+
 export default class Album {
   // implements a directory tree
   // contains a number of recursive functions
@@ -93,7 +108,7 @@ export default class Album {
   // to be computed recursively after reading config
   cover: string = ""
   count: number = 0
-  breadcrumb: string[] = []
+  breadcrumb: {[locale: string]: string}[] = []
 
   constructor(p: string) {
     /*
@@ -158,13 +173,25 @@ export default class Album {
     let album_config: AlbumConfig
     if (this.is_leaf) {
       album_config = {
-        title: this.p == config.albums_path ? "All Photos" : path.basename(this.p),
+        title: translate(i =>
+          this.p == config.albums_path ? config.t_all_photos[i] : (
+            // default to directory name for default locale, empty string otherwise
+            i == 0 ? path.basename(this.p) : ""
+          )
+        ),
         cover: "",
-        photos: this.photos ? this.photos.map(p => ({filename: p, desc: ""})) : []
+        photos: this.photos ? this.photos.map(p => (
+          {filename: p, desc: translate(i => "")}
+        )) : []
       }
     } else {
       album_config = {
-        title: this.p == config.albums_path ? "All Albums" : path.basename(this.p),
+        title: translate(i =>
+          this.p == config.albums_path ? config.t_all_albums[i] : (
+            // default to directory name for default locale, empty string otherwise
+            i == 0 ? path.basename(this.p) : ""
+          )
+        ),
         cover: "",
         subalbums: this.subalbums ? this.subalbums.map(s => path.basename(s.p)) : []
       }
@@ -187,13 +214,31 @@ export default class Album {
     this.album_config = JSON.parse(fs.readFileSync(this.p + "/config.json", "utf8"))
   }
 
+  setTitle() {
+    // recursive
+    // use default language title if empty
+    if (this.album_config) {
+      this.album_config.title = defaultLanguageIfEmpty(this.album_config.title)
+    }
+    if (this.is_leaf) {
+
+    } else {
+      for (let s of this.subalbums || []) {
+        s.setTitle()
+      }
+    }
+  }
+
   setBreadcrumb() {
     // recursive
+    // run after this.setTitle
     if (this.is_leaf) {
 
     } else {
       for (let s of this.subalbumsFromConfig()) {
-        s.breadcrumb = this.breadcrumb.concat([this.album_config?.title || ""])
+        s.breadcrumb = this.breadcrumb.concat([
+          translate(i => this.album_config?.title[config.locales[i]] || "")
+        ])
         s.setBreadcrumb()
       }
     }
@@ -244,7 +289,7 @@ export default class Album {
     let album_data : AlbumData = {
       is_leaf: this.is_leaf,
       url: pathToURL(this.p, 3),
-      title: this.album_config?.title || "",
+      title: this.album_config?.title || {},
       breadcrumb: this.breadcrumb,
     }
     if (this.is_leaf) {
@@ -256,7 +301,7 @@ export default class Album {
       // get Album[] from string[] of directory names
       album_data.subalbums = this.subalbumsFromConfig().map(s => ({
         url: pathToURL(s?.p || "", 3),
-        title: s?.album_config?.title || "",
+        title: s?.album_config?.title || {},
         cover: s?.cover || "",
         count: s?.count || 0
       })) || []

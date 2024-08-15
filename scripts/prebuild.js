@@ -16,6 +16,7 @@ var site_config_json_1 = __importDefault(require("../site-config.json"));
 // TODO: implement commands for generating config, thumbnails, album data
 var a = new album_data_1.default(site_config_json_1.default.albums_path);
 a.loadConfig();
+a.setTitle();
 a.setBreadcrumb();
 a.setCover();
 a.setCount();

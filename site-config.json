@@ -10,5 +10,7 @@
   "img_path": "./public/img",
   "thumb_sizes": [320, 640],
   "full_sizes": [1200, 2048],
-  "locales": ["en", "zh"]
+  "locales": ["en", "zh"],
+  "t_all_photos": ["All Photos", "所有相片"],
+  "t_all_albums": ["All Albums", "所有相冊"]
 }
