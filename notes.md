@@ -1,56 +1,12 @@
 ## TODO
 * Add validation of config file, i.e. contents has to match actual contents
-
-## UI structure
-Sitewide:
-* Main
-  * Left vertical navbar
-    * Logo
-    * Albums
-    * Posts
-    * Language toggle
-    * Day/night toggle
-  * Content
-
-Mainpage:
-* Content
-  * Rotating showcase
-    * Individual photo square with info when hovered
-    * ...
-
-Albums:
-* Content
-  * Title (path)
-  * Photo reel
-    * Individual photo square
-    * ...
-
-Posts:
-* Content
-  * Banner
-  * Title
-  * Jump-to-text arrow
-  * Main text
-    * p
-    * ...
-    * Photo gallery
-      * Individual photo square
-      * ...
-    * ...
-
-Lightbox:
-* Screen (darken/blur)
-  * Close
-  * Left arrow
-  * Right arrow
-  * Other controls
-  * Photo
-  * Description
-    * Date/time
-    * Location
-    * Camera info
-    * Linked from
-    * Text description
+* Add detection of content change
+* Move content out of public/ (needs to modify pathToURL, etc)
+* i18n
+** For albums, title
+** For photos, desc
+** For posts, I think it should not be on the level of individual posts, but give config option to link each language version to the default language version
+** 3 or more languages?
 
 site-config.json
 * Configuration for the whole site
