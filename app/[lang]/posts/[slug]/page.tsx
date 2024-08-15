@@ -9,9 +9,15 @@ import config from "@/site-config.json"
 export default function Post({params}: {params: {lang: string, slug: string}}) {
   const post = posts.find(p => p.slug == decodeURIComponent(params.slug)) ||
     {slug: "", title: "", date: "", cover: "", count: "", blurb: "", post: "", galleries: []}
+  const galleries = post.galleries.flat().map(
+    (g: {src: string, desc: {[lang: string]: string}}) => (
+      {src: g.src, desc: g.desc[params.lang]}
+    )
+  )
+
 
   return (// Put some things in components!
-    <SlideshowSetter photos={post.galleries.flat()}>
+    <SlideshowSetter photos={galleries}>
       <div className="relative w-full h-full overflow-hidden">
         <div className="absolute w-full h-[calc(100%-8rem)]">
           <div className="relative w-full h-full">

@@ -3,8 +3,7 @@
 * Add detection of content change
 * Move content out of public/ (needs to modify pathToURL, etc)
 * i18n
-** For albums, title
-** For photos, desc
+** Preserve language choice using cookie
 ** For posts, I think it should not be on the level of individual posts, but give config option to link each language version to the default language version
 ** 3 or more languages?
 

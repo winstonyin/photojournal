@@ -13,17 +13,33 @@ export default function AlbumsPage({params}: {params: {lang: string, path?: stri
   */
   const album_url = params.path ? "/albums/" + decodeURIComponent(params.path.join("/")) : "/albums"
   const album_data = albums.find(a => a.url == album_url)
+  // extract only the chosen language
+  // TODO: abstract away and consolidate with the posts page
+  const photos = album_data?.photos?.map(
+    (p: {src: string, desc: {[lang: string]: string}}) => (
+      {src: p.src, desc: p.desc[params.lang]}
+    )
+  ) || []
+  const subalbums = album_data?.subalbums?.map(
+    (s: {url: string, title: {[lang: string]: string}, cover: string, count: number}) => (
+      {...s, title: s.title[params.lang]}
+    )
+  ) || []
+  const breadcrumb = album_data?.breadcrumb.map(
+    (b: {[lang: string]: string}) => b[params.lang]
+  ) || []
+  const title = (album_data?.title as {[lang: string]: string})[params.lang]
   const is_leaf = album_data?.is_leaf; // false for dir of dirs, true for dir of photos
   const gallery = is_leaf ? (
-    <SlideshowSetter photos={album_data?.photos || []}>
+    <SlideshowSetter photos={photos}>
       <PhotoGallery
-        photos={album_data?.photos || []}
+        photos={photos}
         start_key={0}
       />
     </SlideshowSetter>
   ) : (
     <AlbumGallery
-      albums={album_data?.subalbums || []}
+      albums={subalbums}
       start_key={0}
     />
   )
@@ -32,8 +48,8 @@ export default function AlbumsPage({params}: {params: {lang: string, path?: stri
     <div className="pt-3 flex flex-wrap">
       <Breadcrumb
         url={album_data?.url || ""}
-        crumbs={album_data?.breadcrumb || []}
-        title={album_data?.title || ""} />
+        crumbs={breadcrumb}
+        title={title} />
       {gallery}
     </div>
   )

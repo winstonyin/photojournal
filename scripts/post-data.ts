@@ -10,6 +10,15 @@ function pathToURL(p: string, trim: number) {
   return "/" + p.split(path.sep).slice(trim).join("/")
 }
 
+function translate(t: (i: number) => string) {
+  // t returns the translated string corresponding to the i-th locale
+  // TODO: consolidate!
+  return config.locales.map((l, i) => [l, t(i)]).reduce((acc, [key, value]) => {
+    acc[key] = value
+    return acc
+  }, {} as {[locale: string]: string})
+}
+
 class Post {
   slug: string // path ./public/content/albums/...
   contents: string
@@ -19,7 +28,7 @@ class Post {
   cover: string = ""
   count: number = 0
   blurb: string = ""
-  galleries: {src: string, desc: string}[][] = [] // array of galleries, each an array of photos
+  galleries: {src: string, desc: {[locale: string]: string}}[][] = [] // array of galleries, each an array of photos
 
   constructor(p: string) {
     const filename = pathToURL(p, 4)
@@ -77,13 +86,15 @@ class Post {
     this.galleries = []
     // TODO: change replace to match
     this.contents.replace(gallery_regex, (_, p1: string) => {
-      let gallery : {src: string, desc: string}[] = []
+      let gallery : {src: string, desc: {[locale: string]: string}}[] = []
       // TODO: change replace to match
       p1.replace(/^(\*|)(\/.+)/gm, (_0, _1, p2) => {
         const src = pathToURL(config.albums_path, 2) + p2
         const a = albums.find(a => a.url == pathToURL(config.albums_path, 3) + path.dirname(p2))
-        const photo = a?.photos?.find((p: {src: string, desc: string}) => p.src == src) || {src: "", desc: ""}
-        gallery.push({src: src, desc: photo.desc || ""})
+        const photo = a?.photos?.find(
+          (p: {src: string, desc: {[locale: string]: string}}) => p.src == src
+        ) || {src: "", desc: translate(i => "")}
+        gallery.push({src: src, desc: photo.desc})
         return ""
       })
       this.galleries.push(gallery)
