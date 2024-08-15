@@ -1,19 +1,21 @@
 import Image from "next/image"
 import ModalLink from "./modal/modal-link"
-import { imageSize } from "../helpers"
+import { imageSize } from "../../helpers"
 
-export default function PhotoGallery({photos, start_key}: {
-  photos: {
+export default function PartialPhotoGallery({galleries, id}: {
+  galleries: {
     src: string
     desc: string
-  }[],
-  start_key: number
+  }[][],
+  id: number,
 }) {
-  const photo_array = photos.map((p, i) => 
+  const start_key = galleries.slice(0, id).flat().length
+  const photos = galleries[id]
+  const photo_items = photos.map((s, i) =>
     <div key={i + start_key} className="relative inline-block overflow-visible hover:overflow-visible w-48 h-48 m-0.5 bg-gray-500 justify-center align-middle hover:scale-[1.03] transition-transform">
       <ModalLink id={i + start_key}>
         <Image
-          src={imageSize(p.src, 192)}
+          src={imageSize(s.src, 192)}
           alt="photo"
           fill
           className="object-cover"
@@ -24,8 +26,8 @@ export default function PhotoGallery({photos, start_key}: {
   )
 
   return (
-    <>
-    {photo_array}
-    </>
+    <div className="flex flex-wrap mt-8 mb-8">
+      {photo_items}
+    </div>
   )
 }

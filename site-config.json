@@ -9,5 +9,6 @@
   "posts_path": "./public/content/posts",
   "img_path": "./public/img",
   "thumb_sizes": [320, 640],
-  "full_sizes": [1200, 2048]
+  "full_sizes": [1200, 2048],
+  "locales": ["en", "zh"]
 }

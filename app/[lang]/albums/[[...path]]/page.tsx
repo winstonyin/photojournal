@@ -1,7 +1,7 @@
-import AlbumGallery from "@/app/components/album-gallery";
-import Breadcrumb from "@/app/components/breadcrumb";
-import PhotoGallery from "@/app/components/photo-gallery";
-import SlideshowSetter from "@/app/components/slideshow-setter";
+import AlbumGallery from "@/app/[lang]/components/album-gallery";
+import Breadcrumb from "@/app/[lang]/components/breadcrumb";
+import PhotoGallery from "@/app/[lang]/components/photo-gallery";
+import SlideshowSetter from "@/app/[lang]/components/slideshow-setter";
 import albums from "@/data/albums.json"
 
 export default function AlbumsPage({params}: {params: {path?: string[]}}) {

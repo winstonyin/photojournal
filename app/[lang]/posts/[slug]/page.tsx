@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Markdown from "markdown-to-jsx"
-import PartialPhotoGallery from "@/app/components/partial-photo-gallery"
-import SlideshowSetter from "@/app/components/slideshow-setter"
+import PartialPhotoGallery from "@/app/[lang]/components/partial-photo-gallery"
+import SlideshowSetter from "@/app/[lang]/components/slideshow-setter"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 import posts from "@/data/posts.json"
 

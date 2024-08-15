@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { imageSize } from "../helpers"
+import { imageSize } from "../../helpers"
 
 export default function PostItem({url, title, date, cover, count, blurb}: {
   url: string,
