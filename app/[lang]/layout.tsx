@@ -8,6 +8,7 @@ import NavItem from "./components/navbar/nav-item";
 import ControlItem from "./components/navbar/control-item";
 import ModalWrapper from "./components/modal/modal-wrapper";
 import { PhotoIcon, NewspaperIcon, LanguageIcon, SunIcon } from "@heroicons/react/24/solid";
+import LanguageSwitcher from "./components/navbar/language-switcher";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   title: config.title,
   description: config.description
 }
-
+// TODO: Move Navbar to the navbar file?
 export default function RootLayout({params, children}: {params: {lang: string}, children: React.ReactNode}) {
   return (
     <html lang={params.lang}>
@@ -41,9 +42,9 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
             </div>
             <div className="mt-auto">
               <ul>
-                <ControlItem>
+                <LanguageSwitcher>
                   <LanguageIcon className="w-7 h-7" />
-                </ControlItem>
+                </LanguageSwitcher>
                 <ControlItem>
                   <SunIcon className="w-7 h-7" />
                 </ControlItem>

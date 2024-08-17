@@ -9,7 +9,6 @@ import Album from "./album-data"
 import processPosts from "./post-data"
 import config from "../site-config.json"
 
-// TODO: implement commands for generating config, thumbnails, album data
 const a = new Album(config.albums_path)
 a.loadConfig()
 a.setTitle()
