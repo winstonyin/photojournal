@@ -13,7 +13,7 @@ var fs_1 = __importDefault(require("fs"));
 var album_data_1 = __importDefault(require("./album-data"));
 var post_data_1 = __importDefault(require("./post-data"));
 var site_config_json_1 = __importDefault(require("../site-config.json"));
-// TODO: implement commands for generating config, thumbnails, album data
+// TODO: separate albums and posts
 var a = new album_data_1.default(site_config_json_1.default.albums_path);
 a.loadConfig();
 a.setTitle();

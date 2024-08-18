@@ -13,19 +13,52 @@ function pathToURL(p, trim) {
     // returns /albums/[more_path] for trim=3
     return "/" + p.split(path_1.default.sep).slice(trim).join("/");
 }
+function translate(t) {
+    // t returns the translated string corresponding to the i-th locale
+    // TODO: consolidate!
+    return site_config_json_1.default.locales.map(function (l, i) { return [l, t(i)]; }).reduce(function (acc, _a) {
+        var key = _a[0], value = _a[1];
+        acc[key] = value;
+        return acc;
+    }, {});
+}
+var PostPack = /** @class */ (function () {
+    function PostPack(p) {
+        var filename = pathToURL(p, 4);
+        this.slug = filename.substring(1, filename.length - 3);
+        var contents = fs_1.default.readFileSync(p).toString();
+        // TODO: change to matchAll
+        this.posts = contents.split("\n---\n").map(function (c) { return new Post(c); });
+    }
+    PostPack.prototype.getData = function () {
+        return {
+            slug: this.slug,
+            posts: this.posts.map(function (post) {
+                post.expandDirs();
+                post.setCount();
+                post.setCover();
+                post.setGalleries();
+                post.cleanup();
+                post.setBlurb();
+                return post.getData();
+            })
+        };
+    };
+    return PostPack;
+}());
 var Post = /** @class */ (function () {
-    function Post(p) {
+    function Post(contents) {
         this.cover = "";
         this.count = 0;
         this.blurb = "";
         this.galleries = []; // array of galleries, each an array of photos
-        var filename = pathToURL(p, 4);
-        this.slug = filename.substring(1, filename.length - 3);
-        this.contents = fs_1.default.readFileSync(p).toString();
+        this.contents = contents;
         var title_match = this.contents.match(/title:\s*(.+)/);
         this.title = title_match ? title_match[1] : "";
         var date_match = this.contents.match(/date:\s*(\d\d\d\d)\-(\d\d)\-(\d\d)/);
         this.date = date_match ? date_match[1] + date_match[2] + date_match[3] : "";
+        var lang_match = this.contents.match(/lang:\s*(.+)/);
+        this.lang = lang_match ? lang_match[1] : "";
         this.dirs = this.contents.match(/directory:\s*\[.+\]\(.+\)/g) || [];
     }
     Post.prototype.expandDirs = function () {
@@ -81,8 +114,8 @@ var Post = /** @class */ (function () {
                 var _a;
                 var src = pathToURL(site_config_json_1.default.albums_path, 2) + p2;
                 var a = albums.find(function (a) { return a.url == pathToURL(site_config_json_1.default.albums_path, 3) + path_1.default.dirname(p2); });
-                var photo = ((_a = a === null || a === void 0 ? void 0 : a.photos) === null || _a === void 0 ? void 0 : _a.find(function (p) { return p.src == src; })) || { src: "", desc: "" };
-                gallery.push({ src: src, desc: photo.desc || "" });
+                var photo = ((_a = a === null || a === void 0 ? void 0 : a.photos) === null || _a === void 0 ? void 0 : _a.find(function (p) { return p.src == src; })) || { src: "", desc: translate(function (i) { return ""; }) };
+                gallery.push({ src: src, desc: photo.desc });
                 return "";
             });
             _this.galleries.push(gallery);
@@ -95,7 +128,9 @@ var Post = /** @class */ (function () {
         var leading_newline_regex = new RegExp("^\n+", "s");
         var gallery_regex = new RegExp("<gallery>.+?<\/gallery>", "gs");
         var id = 0;
-        this.contents = this.contents.replace(/title:\s*.+/, "")
+        this.contents = this.contents
+            .replace(/lang:\s*.+/, "")
+            .replace(/title:\s*.+/, "")
             .replace(/date:\s*\d\d\d\d\-\d\d\-\d\d/, "")
             .replace(/directory:\s*\[.+\]\(.+\)/g, "")
             .replace(empty_lines_regex, "\n\n") // empty lines
@@ -114,7 +149,7 @@ var Post = /** @class */ (function () {
     };
     Post.prototype.getData = function () {
         return {
-            slug: this.slug,
+            lang: this.lang,
             title: this.title,
             date: this.date,
             cover: this.cover,
@@ -130,15 +165,9 @@ function isPost(dirent) {
     return dirent.isFile() && path_1.default.extname(dirent.name).toLowerCase() == '.md';
 }
 function processPost(dirent) {
-    var post = new Post(dirent.parentPath + path_1.default.sep + dirent.name);
-    post.expandDirs();
-    post.setCount();
-    post.setCover();
-    post.setGalleries();
-    post.cleanup();
-    post.setBlurb();
-    return post.getData();
+    var post_pack = new PostPack(dirent.parentPath + path_1.default.sep + dirent.name);
+    return post_pack.getData();
 }
 function compilePosts(p) {
-    return fs_1.default.readdirSync(p, { withFileTypes: true }).filter(isPost).map(processPost).sort(function (a, b) { return +b.date - +a.date; });
+    return fs_1.default.readdirSync(p, { withFileTypes: true }).filter(isPost).map(processPost);
 }

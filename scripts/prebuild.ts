@@ -6,9 +6,10 @@ process.
 */
 import fs from "fs"
 import Album from "./album-data"
-import processPosts from "./post-data"
+import compilePosts from "./post-data"
 import config from "../site-config.json"
 
+// TODO: separate albums and posts
 const a = new Album(config.albums_path)
 a.loadConfig()
 a.setTitle()
@@ -18,6 +19,6 @@ a.setCount()
 const album_data = JSON.stringify(a.compileData(), null, 2)
 fs.writeFileSync("./data/albums.json", album_data)
 
-const posts = processPosts(config.posts_path)
+const posts = compilePosts(config.posts_path)
 const posts_data = JSON.stringify(posts, null, 2)
 fs.writeFileSync("./data/posts.json", posts_data)

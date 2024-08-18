@@ -19,25 +19,53 @@ function translate(t: (i: number) => string) {
   }, {} as {[locale: string]: string})
 }
 
-class Post {
+class PostPack {
   slug: string // path ./public/content/albums/...
+  posts: Post[]
+
+  constructor(p: string) {
+    const filename = pathToURL(p, 4)
+    this.slug = filename.substring(1, filename.length - 3)
+    const contents = fs.readFileSync(p).toString()
+    // TODO: change to matchAll
+    this.posts = contents.split("\n---\n").map(c => new Post(c))
+  }
+
+  getData() {
+    return {
+      slug: this.slug,
+      posts: this.posts.map(post => {
+        post.expandDirs()
+        post.setCount()
+        post.setCover()
+        post.setGalleries()
+        post.cleanup()
+        post.setBlurb()
+        return post.getData()
+      })
+    }
+  }
+}
+
+class Post {
   contents: string
   title: string
   date: string
+  lang: string
   dirs: string[]
   cover: string = ""
   count: number = 0
   blurb: string = ""
   galleries: {src: string, desc: {[locale: string]: string}}[][] = [] // array of galleries, each an array of photos
 
-  constructor(p: string) {
-    const filename = pathToURL(p, 4)
-    this.slug = filename.substring(1, filename.length - 3)
-    this.contents = fs.readFileSync(p).toString()
+  constructor(contents: string) {
+    this.contents = contents
     const title_match = this.contents.match(/title:\s*(.+)/)
     this.title = title_match ? title_match[1] : ""
     const date_match = this.contents.match(/date:\s*(\d\d\d\d)\-(\d\d)\-(\d\d)/)
     this.date = date_match ? date_match[1] + date_match[2] + date_match[3] : ""
+    const lang_match = this.contents.match(/lang:\s*(.+)/)
+    this.lang = lang_match ? lang_match[1] : ""
     this.dirs = this.contents.match(/directory:\s*\[.+\]\(.+\)/g) || []
   }
 
@@ -108,7 +136,9 @@ class Post {
     const leading_newline_regex = new RegExp("^\n+", "s")
     const gallery_regex = new RegExp("<gallery>.+?<\/gallery>", "gs")
     let id = 0
-    this.contents = this.contents.replace(/title:\s*.+/, "")
+    this.contents = this.contents
+      .replace(/lang:\s*.+/, "")
+      .replace(/title:\s*.+/, "")
       .replace(/date:\s*\d\d\d\d\-\d\d\-\d\d/, "")
       .replace(/directory:\s*\[.+\]\(.+\)/g, "")
       .replace(empty_lines_regex, "\n\n") // empty lines
@@ -129,7 +159,7 @@ class Post {
 
   getData() {
     return {
-      slug: this.slug,
+      lang: this.lang,
       title: this.title,
       date: this.date,
       cover: this.cover,
@@ -146,16 +176,10 @@ function isPost(dirent: fs.Dirent) {
 }
 
 function processPost(dirent: fs.Dirent) {
-  const post = new Post(dirent.parentPath + path.sep + dirent.name)
-  post.expandDirs()
-  post.setCount()
-  post.setCover()
-  post.setGalleries()
-  post.cleanup()
-  post.setBlurb()
-  return post.getData()
+  const post_pack = new PostPack(dirent.parentPath + path.sep + dirent.name)
+  return post_pack.getData()
 }
 
 export default function compilePosts(p: string) {
-  return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost).sort((a, b) => +b.date - +a.date)
+  return fs.readdirSync(p, {withFileTypes: true}).filter(isPost).map(processPost)
 }

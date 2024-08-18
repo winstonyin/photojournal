@@ -9,7 +9,9 @@ export default function LanguageSwitcher({children}: {children: React.ReactNode}
   const i_path_locale = config.locales.findIndex(
     l => pathname.startsWith(`/${l}/`) || pathname === `/${l}`
   ) || 0
+  // TODO: adjust locale array for each post based on available languages
   const next_locale = config.locales[(i_path_locale + 1) % config.locales.length]
+  // TODO: potential issues: locales with special symboles like - and . ??
   const next_url = pathname.replace(`/${config.locales[i_path_locale]}`, `/${next_locale}`)
 
   return (

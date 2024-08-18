@@ -5,16 +5,16 @@ import SlideshowSetter from "@/app/[lang]/components/slideshow-setter"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 import posts from "@/data/posts.json"
 import config from "@/site-config.json"
+import { stringify } from "querystring"
 
 export default function Post({params}: {params: {lang: string, slug: string}}) {
-  const post = posts.find(p => p.slug == decodeURIComponent(params.slug)) ||
-    {slug: "", title: "", date: "", cover: "", count: "", blurb: "", post: "", galleries: []}
+  const post = posts.find(p => p.slug == decodeURIComponent(params.slug))?.posts.find(p => p.lang == params.lang) ||
+    {lang: config.locales[0], title: "", date: "", cover: "", count: "", blurb: "", post: "", galleries: [] as {src: string, desc: {[locales: string]: string}}[][]}
   const galleries = post.galleries.flat().map(
     (g: {src: string, desc: {[lang: string]: string}}) => (
       {src: g.src, desc: g.desc[params.lang]}
     )
   )
-
 
   return (// Put some things in components!
     <SlideshowSetter photos={galleries}>
@@ -63,6 +63,6 @@ export default function Post({params}: {params: {lang: string, slug: string}}) {
 }
 
 export function generateStaticParams() {
-  const slugs = posts.map(p => config.locales.map(l => ({lang: l, slug: p.slug}))).flat()
-  return slugs
+  const post_paths = posts.map(p => p.posts.map(pl => ({lang: pl.lang, slug: p.slug}))).flat()
+  return post_paths
 }
