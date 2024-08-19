@@ -3,6 +3,7 @@ import Markdown from "markdown-to-jsx"
 import PartialPhotoGallery from "@/app/[lang]/components/partial-photo-gallery"
 import LanguageSetter from "../../components/language-setter"
 import SlideshowSetter from "@/app/[lang]/components/modal/slideshow-setter"
+import { imageSize } from "@/app/helpers"
 import { ChevronDownIcon } from "@heroicons/react/24/solid"
 import posts from "@/data/posts.json"
 import config from "@/site-config.json"
@@ -26,7 +27,7 @@ export default function Post({params}: {params: {lang: string, slug: string}}) {
           <div className="absolute w-full h-[calc(100%-8rem)]">
             <div className="relative w-full h-full">
               <Image
-                src={post.cover} // TODO: this currently loads the FULL master image
+                src={imageSize(post.cover, 2048)}
                 alt="cover photo"
                 fill
                 className="object-cover -z-10"
