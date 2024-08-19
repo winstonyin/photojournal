@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
 
   if (path_locale) {
     const response = NextResponse.next()
-    response.cookies.set("custom_locale", path_locale)
+    response.cookies.set("custom_locale", path_locale) // TODO: not really sure when this is called (server/client?)
     return response
   } else {
     // Redirect if there is no locale

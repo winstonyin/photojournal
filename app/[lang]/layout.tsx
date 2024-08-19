@@ -31,13 +31,13 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
         <LanguageWrapper>
           <ModalWrapper>
             <Navbar>
-              <Logo src={config.logo.src} alt={config.logo.alt} />
+              <Logo src={config.logo.src} alt={config.logo.alt} lang={params.lang} />
               <div>
                 <ul>
-                  <NavItem href="/albums">
+                  <NavItem href={"/" + params.lang + "/albums"}>
                     <PhotoIcon className="w-7 h-7" />
                   </NavItem>
-                  <NavItem href="/posts">
+                  <NavItem href={"/" + params.lang + "/posts"}>
                     <NewspaperIcon className="w-7 h-7" />
                   </NavItem>
                 </ul>

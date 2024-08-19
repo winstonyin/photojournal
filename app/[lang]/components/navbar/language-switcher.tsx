@@ -19,7 +19,7 @@ export default function LanguageSwitcher({children}: {children: React.ReactNode}
   ) || 0
   useEffect(() => {
     setLanguageState(language_state)
-  }, [pathname, setLanguageState])
+  }, [pathname, language_state, setLanguageState])
   const disabled = is_post && language_state.length <= 1
   // TODO: adjust locale array for each post based on available languages
   const next_locale = is_post ? language_state[(i_path_locale + 1) % language_state.length] : config.locales[(i_path_locale + 1) % config.locales.length]
