@@ -9,7 +9,7 @@ export default function PostsPage({params}: {params: {lang: string}}) {
       return (
         <PostItem
           key={i}
-          url={"/posts/" + p.slug}
+          url={"/" + params.lang + "/posts/" + p.slug}
           title={matching_post.title}
           date={matching_post.date}
           cover={matching_post.cover}

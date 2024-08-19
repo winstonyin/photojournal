@@ -92,13 +92,13 @@ var Post = /** @class */ (function () {
         var featured_regex = new RegExp("<gallery>.*?\n\\*(.+?)\n.*?<\/gallery>", "s");
         var featured_match = this.contents.match(featured_regex);
         if (featured_match) {
-            this.cover = pathToURL(site_config_json_1.default.albums_path, 2) + featured_match[1];
+            this.cover = pathToURL(site_config_json_1.default.albums_path, 3) + featured_match[1];
         }
         else {
             // if not set using "*", default to first photo
             var first_regex = new RegExp("<gallery>\n+(.+?)\n", "s");
             var first_match = this.contents.match(first_regex);
-            this.cover = first_match ? pathToURL(site_config_json_1.default.albums_path, 2) + first_match[1] : "";
+            this.cover = first_match ? pathToURL(site_config_json_1.default.albums_path, 3) + first_match[1] : "";
         }
     };
     Post.prototype.setGalleries = function () {
@@ -112,7 +112,7 @@ var Post = /** @class */ (function () {
             // TODO: change replace to match
             p1.replace(/^(\*|)(\/.+)/gm, function (_0, _1, p2) {
                 var _a;
-                var src = pathToURL(site_config_json_1.default.albums_path, 2) + p2;
+                var src = pathToURL(site_config_json_1.default.albums_path, 3) + p2;
                 var a = albums.find(function (a) { return a.url == pathToURL(site_config_json_1.default.albums_path, 3) + path_1.default.dirname(p2); });
                 var photo = ((_a = a === null || a === void 0 ? void 0 : a.photos) === null || _a === void 0 ? void 0 : _a.find(function (p) { return p.src == src; })) || { src: "", desc: translate(function (i) { return ""; }) };
                 gallery.push({ src: src, desc: photo.desc });

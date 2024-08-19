@@ -6,18 +6,18 @@ import config from "../site-config.json"
 // one entry of /data/albums.json
 export type AlbumData = {
   is_leaf: boolean
-  url: string // absolute album path /albums/...
+  url: string // absolute album url
   title: {[locale: string]: string}
   breadcrumb: {[locale: string]: string}[] // titles of parents
-  // cover: string // absolute photo src /content/albums/...
+  // cover: string // absolute photo src from /content/albums/
   subalbums?: {
-    url: string // absolute album path /albums/...
+    url: string // absolute album url
     title: {[locale: string]: string}
-    cover: string // absolute photo src /content/albums/...
+    cover: string // absolute photo src from /content/albums/
     count: number
   }[]
   photos?: {
-    src: string
+    src: string // absolute photo src from /content/albums/
     desc: {[locale: string]: string}
     // hidden?: boolean
   }[]
@@ -55,7 +55,7 @@ function isImage(d: fs.Dirent) {
 }
 
 async function generateThumbnail(src: string, s: number, fit: keyof sharp.FitEnum, new_path: string) {
-  await sharp('./public' + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
+  await sharp("." + src).resize(s, s, {fit: fit}).webp().toFile(new_path)
   return {src: src, s: s}
 }
 
@@ -156,11 +156,11 @@ export default class Album {
     if (fs.existsSync(this.p + "/config.json")) {
       if (this.contentChanged()) {
         this.writeConfig("config-new.json")
-        console.log("Contents of " + pathToURL(this.p, 3) + " have changed. New configuration file saved as config-new.json.")
+        console.log("Contents of " + pathToURL(this.p, 2) + " have changed. New configuration file saved as config-new.json.")
       }
     } else {
       this.writeConfig("config.json")
-      console.log("New configuration file for " + pathToURL(this.p, 3) + " saved as config.json.")
+      console.log("New configuration file for " + pathToURL(this.p, 2) + " saved as config.json.")
     }
   }
 
@@ -249,7 +249,7 @@ export default class Album {
     if (this.is_leaf) {
       if (this.album_config?.photos) {
         // default to (manually ordered) first photo, use absolute path
-        this.cover = pathToURL(this.p, 2) + "/" + (this.album_config.cover || this.album_config.photos[0].filename)
+        this.cover = pathToURL(this.p, 3) + "/" + (this.album_config.cover || this.album_config.photos[0].filename)
       }
     } else {
       if (this.album_config?.subalbums) {
@@ -288,19 +288,19 @@ export default class Album {
   getData() {
     let album_data : AlbumData = {
       is_leaf: this.is_leaf,
-      url: pathToURL(this.p, 3),
+      url: pathToURL(this.p, 2),
       title: this.album_config?.title || {},
       breadcrumb: this.breadcrumb,
     }
     if (this.is_leaf) {
       album_data.photos = this.album_config?.photos?.map(p => ({
-        src: pathToURL(this.p, 2) + "/" + p.filename,
+        src: pathToURL(this.p, 3) + "/" + p.filename,
         desc: p.desc
       })) || []
     } else {
       // get Album[] from string[] of directory names
       album_data.subalbums = this.subalbumsFromConfig().map(s => ({
-        url: pathToURL(s?.p || "", 3),
+        url: pathToURL(s?.p || "", 2),
         title: s?.album_config?.title || {},
         cover: s?.cover || "",
         count: s?.count || 0
@@ -326,9 +326,9 @@ export default class Album {
     // recursive
     if (this.is_leaf) {
       // TODO: detect changes to contents
-      fs.mkdirSync('./public/img/' + pathToURL(this.p, 4), {recursive: true})
+      fs.mkdirSync('./public/img/' + pathToURL(this.p, 3), {recursive: true})
       for (let p of this.photos || []) {
-        await processImage(pathToURL(this.p, 2) + "/" + p)
+        await processImage(pathToURL(this.p, 1) + "/" + p)
       }
     } else {
       for (let s of this.subalbums || []) {

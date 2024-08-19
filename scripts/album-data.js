@@ -66,7 +66,7 @@ function generateThumbnail(src, s, fit, new_path) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, sharp_1.default)('./public' + src).resize(s, s, { fit: fit }).webp().toFile(new_path)];
+                case 0: return [4 /*yield*/, (0, sharp_1.default)("." + src).resize(s, s, { fit: fit }).webp().toFile(new_path)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/, { src: src, s: s }];
@@ -185,12 +185,12 @@ var Album = /** @class */ (function () {
         if (fs_1.default.existsSync(this.p + "/config.json")) {
             if (this.contentChanged()) {
                 this.writeConfig("config-new.json");
-                console.log("Contents of " + pathToURL(this.p, 3) + " have changed. New configuration file saved as config-new.json.");
+                console.log("Contents of " + pathToURL(this.p, 2) + " have changed. New configuration file saved as config-new.json.");
             }
         }
         else {
             this.writeConfig("config.json");
-            console.log("New configuration file for " + pathToURL(this.p, 3) + " saved as config.json.");
+            console.log("New configuration file for " + pathToURL(this.p, 2) + " saved as config.json.");
         }
     };
     Album.prototype.contentChanged = function () {
@@ -276,7 +276,7 @@ var Album = /** @class */ (function () {
         if (this.is_leaf) {
             if ((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.photos) {
                 // default to (manually ordered) first photo, use absolute path
-                this.cover = pathToURL(this.p, 2) + "/" + (this.album_config.cover || this.album_config.photos[0].filename);
+                this.cover = pathToURL(this.p, 3) + "/" + (this.album_config.cover || this.album_config.photos[0].filename);
             }
         }
         else {
@@ -320,13 +320,13 @@ var Album = /** @class */ (function () {
         var _a, _b, _c;
         var album_data = {
             is_leaf: this.is_leaf,
-            url: pathToURL(this.p, 3),
+            url: pathToURL(this.p, 2),
             title: ((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.title) || {},
             breadcrumb: this.breadcrumb,
         };
         if (this.is_leaf) {
             album_data.photos = ((_c = (_b = this.album_config) === null || _b === void 0 ? void 0 : _b.photos) === null || _c === void 0 ? void 0 : _c.map(function (p) { return ({
-                src: pathToURL(_this.p, 2) + "/" + p.filename,
+                src: pathToURL(_this.p, 3) + "/" + p.filename,
                 desc: p.desc
             }); })) || [];
         }
@@ -335,7 +335,7 @@ var Album = /** @class */ (function () {
             album_data.subalbums = this.subalbumsFromConfig().map(function (s) {
                 var _a;
                 return ({
-                    url: pathToURL((s === null || s === void 0 ? void 0 : s.p) || "", 3),
+                    url: pathToURL((s === null || s === void 0 ? void 0 : s.p) || "", 2),
                     title: ((_a = s === null || s === void 0 ? void 0 : s.album_config) === null || _a === void 0 ? void 0 : _a.title) || {},
                     cover: (s === null || s === void 0 ? void 0 : s.cover) || "",
                     count: (s === null || s === void 0 ? void 0 : s.count) || 0
@@ -365,13 +365,13 @@ var Album = /** @class */ (function () {
                     case 0:
                         if (!this.is_leaf) return [3 /*break*/, 5];
                         // TODO: detect changes to contents
-                        fs_1.default.mkdirSync('./public/img/' + pathToURL(this.p, 4), { recursive: true });
+                        fs_1.default.mkdirSync('./public/img/' + pathToURL(this.p, 3), { recursive: true });
                         _i = 0, _a = this.photos || [];
                         _d.label = 1;
                     case 1:
                         if (!(_i < _a.length)) return [3 /*break*/, 4];
                         p = _a[_i];
-                        return [4 /*yield*/, processImage(pathToURL(this.p, 2) + "/" + p)];
+                        return [4 /*yield*/, processImage(pathToURL(this.p, 1) + "/" + p)];
                     case 2:
                         _d.sent();
                         _d.label = 3;
