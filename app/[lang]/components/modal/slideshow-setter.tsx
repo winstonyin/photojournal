@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { ModalContext } from "./modal/modal-context"
+import { ModalContext } from "./modal-context"
 
 export default function SlideshowSetter({photos, children}: {
   photos: {src: string, desc: string}[],

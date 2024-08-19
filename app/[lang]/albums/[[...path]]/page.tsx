@@ -1,7 +1,7 @@
 import AlbumGallery from "@/app/[lang]/components/album-gallery";
 import Breadcrumb from "@/app/[lang]/components/breadcrumb";
 import PhotoGallery from "@/app/[lang]/components/photo-gallery";
-import SlideshowSetter from "@/app/[lang]/components/slideshow-setter";
+import SlideshowSetter from "@/app/[lang]/components/modal/slideshow-setter";
 import albums from "@/data/albums.json"
 import config from "@/site-config.json"
 
