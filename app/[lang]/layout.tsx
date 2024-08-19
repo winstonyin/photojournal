@@ -47,9 +47,9 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
                   <LanguageSwitcher>
                     <LanguageIcon className="w-7 h-7" />
                   </LanguageSwitcher>
-                  <ControlItem>
+                  {/* <ControlItem>
                     <SunIcon className="w-7 h-7" />
-                  </ControlItem>
+                  </ControlItem> */}
                 </ul>
               </div>
             </Navbar>

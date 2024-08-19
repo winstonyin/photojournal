@@ -31,7 +31,7 @@ export default function LanguageSwitcher({children}: {children: React.ReactNode}
       {disabled ?
         <Link
           href={next_url}
-          className="grid w-16 h-16 place-items-center pointer-events-none"
+          className="grid w-16 h-16 place-items-center text-gray-400 pointer-events-none"
           aria-disabled="true"
           tabIndex={-1}>
           {children}
