@@ -45,7 +45,7 @@ export default function AlbumsPage({params}: {params: {lang: string, path?: stri
   )
 
   return (
-    <div className="pt-3 flex flex-wrap">
+    <div className="pt-3 pb-5 flex flex-wrap">
       <Breadcrumb
         url={album_data?.url || ""}
         crumbs={breadcrumb}

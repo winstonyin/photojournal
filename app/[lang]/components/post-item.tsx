@@ -21,10 +21,10 @@ export default function PostItem({url, title, date, cover, count, blurb}: {
           unoptimized
         />
       </div>
-      <div className="flex flex-col justify-between px-4 py-6 overflow-hidden">
+      <div className="flex flex-col justify-between w-[436px] px-4 py-6 overflow-hidden">
         <div>
           <h3 className="mb-4 text-2xl whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
-          <p className="w-[404px] h-6 whitespace-nowrap overflow-hidden text-ellipsis">{blurb}</p>
+          <p className="h-6 whitespace-nowrap overflow-hidden text-ellipsis">{blurb}</p>
         </div>
         <div>
           <p className="text-gray-300">date: {date}</p>
