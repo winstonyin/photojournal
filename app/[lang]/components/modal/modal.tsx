@@ -28,7 +28,7 @@ export default function Modal() {
   useHandleKey("ArrowRight", goRight)
 
   return modal_data.show ? (
-    <div className="fixed inset-0 backdrop-blur-lg z-50 flex items-center justify-center no-doc-scroll">
+    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-lg z-50 flex items-center justify-center no-doc-scroll">
       <div className="relative h-4/5 w-4/5 -z-10 select-none">
         <Image
           src={imageSize(modal_data.photos[modal_data.active].src, 2048)}
@@ -39,7 +39,7 @@ export default function Modal() {
           unoptimized
         />
       </div>
-      <div className="absolute bottom-0 h-20 w-full grid content-center justify-center align-middle text-gray-100">
+      <div className="absolute bottom-0 h-20 w-1/2 mx-0 mb-5 grid content-center justify-center align-middle text-gray-100 overflow-scroll">
         {modal_data.photos[modal_data.active].desc}
       </div>
       {modal_data.active == 0 ? null : (

@@ -51,7 +51,7 @@ function pathToURL(p: string, trim: number) {
 }
 
 function isImage(d: fs.Dirent) {
-  return d.isFile() && [".jpg", ".png", ".webp"].includes(path.extname(d.name).toLowerCase())
+  return (d.isFile() || d.isSymbolicLink()) && [".jpg", ".png", ".webp"].includes(path.extname(d.name).toLowerCase())
 }
 
 async function generateThumbnail(src: string, s: number, fit: keyof sharp.FitEnum, new_path: string) {

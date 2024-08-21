@@ -60,7 +60,7 @@ function pathToURL(p, trim) {
     return "/" + p.split(path_1.default.sep).slice(trim).join("/");
 }
 function isImage(d) {
-    return d.isFile() && [".jpg", ".png", ".webp"].includes(path_1.default.extname(d.name).toLowerCase());
+    return (d.isFile() || d.isSymbolicLink()) && [".jpg", ".png", ".webp"].includes(path_1.default.extname(d.name).toLowerCase());
 }
 function generateThumbnail(src, s, fit, new_path) {
     return __awaiter(this, void 0, void 0, function () {

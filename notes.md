@@ -1,10 +1,13 @@
 ## TODO
 * Add validation of config file, i.e. contents has to match actual contents
 * Add detection of content change
-* Move content out of public/ (needs to modify pathToURL, etc)
 * i18n
-** For posts, I think it should not be on the level of individual posts, but give config option to link each language version to the default language version
-** 3 or more languages?
+** For posts, fix language switcher flicker
+* Light mode
+* Pre-loading neighbouring images in modal
+* Loading animation
+* Hashing photo names
+* Mobile UI
 
 site-config.json
 * Configuration for the whole site

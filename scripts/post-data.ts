@@ -20,11 +20,11 @@ function translate(t: (i: number) => string) {
 }
 
 class PostPack {
-  slug: string // path ./public/content/albums/...
+  slug: string // path /content/albums/...
   posts: Post[]
 
   constructor(p: string) {
-    const filename = pathToURL(p, 4)
+    const filename = pathToURL(p, 3)
     this.slug = filename.substring(1, filename.length - 3)
     const contents = fs.readFileSync(p).toString()
     // TODO: change to matchAll
@@ -99,12 +99,12 @@ class Post {
     const featured_regex = new RegExp("<gallery>.*?\n\\*(.+?)\n.*?<\/gallery>", "s")
     const featured_match = this.contents.match(featured_regex)
     if (featured_match) {
-      this.cover = pathToURL(config.albums_path, 3) + featured_match[1]
+      this.cover = featured_match[1]
     } else {
       // if not set using "*", default to first photo
       const first_regex = new RegExp("<gallery>\n+(.+?)\n", "s")
       const first_match = this.contents.match(first_regex)
-      this.cover = first_match ? pathToURL(config.albums_path, 3) + first_match[1] : ""
+      this.cover = first_match ? first_match[1] : ""
     }
   }
 
@@ -117,8 +117,8 @@ class Post {
       let gallery : {src: string, desc: {[locale: string]: string}}[] = []
       // TODO: change replace to match
       p1.replace(/^(\*|)(\/.+)/gm, (_0, _1, p2) => {
-        const src = pathToURL(config.albums_path, 3) + p2
-        const a = albums.find(a => a.url == pathToURL(config.albums_path, 3) + path.dirname(p2))
+        const src = p2
+        const a = albums.find(a => a.url == pathToURL(config.albums_path, 2) + path.dirname(p2))
         const photo = a?.photos?.find(
           (p: {src: string, desc: {[locale: string]: string}}) => p.src == src
         ) || {src: "", desc: translate(i => "")}
