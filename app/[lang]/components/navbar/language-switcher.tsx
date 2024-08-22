@@ -29,16 +29,18 @@ export default function LanguageSwitcher({children}: {children: React.ReactNode}
   return (
     <li className="float-left">
       {disabled ?
-        <Link
-          href={next_url}
-          className="grid w-16 h-16 place-items-center text-gray-400 pointer-events-none"
-          aria-disabled="true"
-          tabIndex={-1}>
+        <div
+          // href={next_url}
+          className="grid w-16 h-16 place-items-center text-gray-400"
+          // aria-disabled="true"
+          // tabIndex={-1} >
+          >
           {children}
-        </Link> :
+        </div> :
         <Link
           href={next_url}
-          className="grid w-16 h-16 place-items-center hover:bg-gray-800">
+          className="grid w-16 h-16 place-items-center hover:bg-gray-800"
+          scroll={false} >
           {children}
         </Link>}
     </li>
