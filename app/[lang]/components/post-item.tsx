@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { imageSize } from "../../helpers"
 
+// TODO: format date by language
 export default function PostItem({url, title, date, cover, count, blurb}: {
   url: string,
   title: string,
@@ -27,7 +28,7 @@ export default function PostItem({url, title, date, cover, count, blurb}: {
           <p className="h-6 whitespace-nowrap overflow-hidden text-ellipsis">{blurb}</p>
         </div>
         <div>
-          <p className="text-gray-300">date: {date}</p>
+          <p className="text-gray-300">{date}</p>
           <p className="text-gray-300">{count} photos</p>
         </div>
       </div>

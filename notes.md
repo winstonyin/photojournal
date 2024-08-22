@@ -3,6 +3,9 @@
 * Add detection of content change
 * i18n
 ** For posts, fix language switcher flicker
+** Formatted translation (date, n photos, etc.)
+* Display number of subalbums
+* Frontpage: newest albums and posts
 * Light mode
 * Pre-loading neighbouring images in modal
 * Loading animation

@@ -41,6 +41,7 @@ export default function AlbumsPage({params}: {params: {lang: string, path?: stri
     <AlbumGallery
       albums={subalbums}
       start_key={0}
+      lang={params.lang}
     />
   )
 
