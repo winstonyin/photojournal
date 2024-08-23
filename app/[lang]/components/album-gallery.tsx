@@ -5,7 +5,8 @@ export default function AlbumGallery({albums, start_key, lang}: {
     url: string,
     title: string,
     cover: string,
-    count: number
+    photo_count: number,
+    album_count: number
   }[],
   start_key: number,
   lang: string
@@ -16,7 +17,8 @@ export default function AlbumGallery({albums, start_key, lang}: {
       url={a.url}
       title={a.title}
       cover={a.cover}
-      count={a.count}
+      photo_count={a.photo_count}
+      album_count={a.album_count}
       lang={lang} />
   )
 

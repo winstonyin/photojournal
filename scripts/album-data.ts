@@ -14,7 +14,8 @@ export type AlbumData = {
     url: string // absolute album url
     title: {[locale: string]: string}
     cover: string // absolute photo src from /content/albums/
-    count: number
+    photo_count: number
+    album_count: number
   }[]
   photos?: {
     src: string // absolute photo src from /content/albums/
@@ -107,7 +108,8 @@ export default class Album {
   album_config?: AlbumConfig // read from config file
   // to be computed recursively after reading config
   cover: string = ""
-  count: number = 0
+  photo_count: number = 0
+  album_count: number = 0
   breadcrumb: {[locale: string]: string}[] = []
 
   constructor(p: string) {
@@ -271,16 +273,17 @@ export default class Album {
     // recursive
     if (this.is_leaf) {
       if (this.album_config?.photos) {
-        this.count = this.album_config.photos.length
+        this.photo_count = this.album_config.photos.length
       }
     } else {
       if (this.album_config?.subalbums) {
-        let count = 0
+        let photo_count = 0
         for (let s of this.subalbums || []) {
           s.setCount()
-          count += s.count
+          photo_count += s.photo_count
         }
-        this.count = count
+        this.photo_count = photo_count
+        this.album_count = this.subalbums?.length || 0
       }
     }
   }
@@ -303,7 +306,8 @@ export default class Album {
         url: pathToURL(s?.p || "", 2),
         title: s?.album_config?.title || {},
         cover: s?.cover || "",
-        count: s?.count || 0
+        photo_count: s?.photo_count || 0,
+        album_count: s?.album_count || 0
       })) || []
     }
     return album_data

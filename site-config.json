@@ -13,5 +13,7 @@
   "locales": ["en", "zh"],
   "t_all_photos": ["All Photos", "所有相片"],
   "t_all_albums": ["All Albums", "所有相冊"],
-  "t_photo_count": [" photos", "張相片"]
+  "t_photo_count": [" photos", "張相片"],
+  "t_album_count": [" albums", "本相冊"]
+
 }

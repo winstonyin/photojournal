@@ -21,7 +21,7 @@ export default function AlbumsPage({params}: {params: {lang: string, path?: stri
     )
   ) || []
   const subalbums = album_data?.subalbums?.map(
-    (s: {url: string, title: {[lang: string]: string}, cover: string, count: number}) => (
+    (s: {url: string, title: {[lang: string]: string}, cover: string, photo_count: number, album_count: number}) => (
       {...s, title: s.title[params.lang]}
     )
   ) || []

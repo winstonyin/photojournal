@@ -137,7 +137,8 @@ var Album = /** @class */ (function () {
     function Album(p) {
         // to be computed recursively after reading config
         this.cover = "";
-        this.count = 0;
+        this.photo_count = 0;
+        this.album_count = 0;
         this.breadcrumb = [];
         /*
         recursively crawls through directory tree
@@ -296,22 +297,23 @@ var Album = /** @class */ (function () {
         }
     };
     Album.prototype.setCount = function () {
-        var _a, _b;
+        var _a, _b, _c;
         // recursive
         if (this.is_leaf) {
             if ((_a = this.album_config) === null || _a === void 0 ? void 0 : _a.photos) {
-                this.count = this.album_config.photos.length;
+                this.photo_count = this.album_config.photos.length;
             }
         }
         else {
             if ((_b = this.album_config) === null || _b === void 0 ? void 0 : _b.subalbums) {
-                var count = 0;
-                for (var _i = 0, _c = this.subalbums || []; _i < _c.length; _i++) {
-                    var s = _c[_i];
+                var photo_count = 0;
+                for (var _i = 0, _d = this.subalbums || []; _i < _d.length; _i++) {
+                    var s = _d[_i];
                     s.setCount();
-                    count += s.count;
+                    photo_count += s.photo_count;
                 }
-                this.count = count;
+                this.photo_count = photo_count;
+                this.album_count = ((_c = this.subalbums) === null || _c === void 0 ? void 0 : _c.length) || 0;
             }
         }
     };
@@ -338,7 +340,8 @@ var Album = /** @class */ (function () {
                     url: pathToURL((s === null || s === void 0 ? void 0 : s.p) || "", 2),
                     title: ((_a = s === null || s === void 0 ? void 0 : s.album_config) === null || _a === void 0 ? void 0 : _a.title) || {},
                     cover: (s === null || s === void 0 ? void 0 : s.cover) || "",
-                    count: (s === null || s === void 0 ? void 0 : s.count) || 0
+                    photo_count: (s === null || s === void 0 ? void 0 : s.photo_count) || 0,
+                    album_count: (s === null || s === void 0 ? void 0 : s.album_count) || 0
                 });
             }) || [];
         }
