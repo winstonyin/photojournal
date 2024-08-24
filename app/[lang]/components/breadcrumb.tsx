@@ -2,15 +2,16 @@ import { ChevronRightIcon } from "@heroicons/react/16/solid"
 import { Fragment } from "react"
 import Link from "next/link"
 
-export default function Breadcrumb({url, crumbs, title}: {
+export default function Breadcrumb({url, lang, crumbs, title}: {
   url: string,
+  lang: string,
   crumbs: string[],
   title: string
 }) {
   const url_segments = url.split("/")
   const linked_crumbs = crumbs.map((c, i) => (
     <Fragment key={"frag" + i}>
-      <Link href={url_segments.slice(0, i+2).join("/")}>{c}</Link>
+      <Link href={"/" + lang + url_segments.slice(0, i+2).join("/")}>{c}</Link>
       {(i < crumbs.length-1) ? <ChevronRightIcon className="inline w-4 h-4" /> : null}
     </Fragment>
   ))

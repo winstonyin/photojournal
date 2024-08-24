@@ -5,7 +5,7 @@ import site_config from "./site-config.json";
 
 function getLocale(request: NextRequest) {
   const accept_language = request.headers.get("accept-language") || ""
-  const cookie_language = request.cookies.get("custom_locale")?.value
+  const cookie_language = request.cookies.get("custom_locale")?.value // TODO: doesn't work...
   const languages = new Negotiator({headers: {"accept-language": cookie_language || accept_language}}).languages()
   const default_locale = site_config.locales[0] || "en"
   return match(languages, site_config.locales, default_locale)
@@ -19,13 +19,17 @@ export function middleware(request: NextRequest) {
   )
 
   if (path_locale) {
-    const response = NextResponse.next()
-    response.cookies.set("custom_locale", path_locale) // TODO: not really sure when this is called (server/client?)
-    return response
+    if (pathname == `/${path_locale}`) {
+      request.nextUrl.pathname = `/${path_locale}/albums`
+      return NextResponse.redirect(request.nextUrl)
+    }
+    // response = NextResponse.next()
+    // TODO: so this straight-up doesn't work
+    // response.cookies.set("custom_locale", path_locale) // TODO: not really sure when this is called (server/client?)
   } else {
     // Redirect if there is no locale
     const locale = getLocale(request)
-    request.nextUrl.pathname = `/${locale}${pathname}`
+    request.nextUrl.pathname = pathname ? `/${locale}${pathname}` : `/${locale}/albums`
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
     return NextResponse.redirect(request.nextUrl)
