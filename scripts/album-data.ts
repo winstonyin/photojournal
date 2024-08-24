@@ -101,7 +101,7 @@ function defaultLanguageIfEmpty(dict: {[locale: string]: string}) {
 export default class Album {
   // implements a directory tree
   // contains a number of recursive functions
-  p: string // path ./public/content/albums/...
+  p: string // path ./content/albums/...
   is_leaf: boolean
   subalbums?: Album[] // from filesystem
   photos?: string[] // from filesystem, just the filenames
@@ -264,7 +264,7 @@ export default class Album {
             child_cover = s.cover
           }
         }
-        this.cover = this.album_config.cover || child_cover
+        this.cover = this.album_config.cover ? pathToURL(this.p, 3) + "/" + this.album_config.cover : child_cover
       }
     }
   }

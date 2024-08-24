@@ -292,7 +292,7 @@ var Album = /** @class */ (function () {
                         child_cover = s.cover;
                     }
                 }
-                this.cover = this.album_config.cover || child_cover;
+                this.cover = this.album_config.cover ? pathToURL(this.p, 3) + "/" + this.album_config.cover : child_cover;
             }
         }
     };
