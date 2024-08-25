@@ -16,8 +16,15 @@ const inter = Inter({ subsets: ["latin"] });
 // load custom site config
 export const metadata: Metadata = {
   title: config.title,
-  description: config.description
+  description: config.description,
 }
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover"
+}
+
 // TODO: Move Navbar to the navbar file?
 export default function RootLayout({params, children}: {params: {lang: string}, children: React.ReactNode}) {
   return (
@@ -27,7 +34,7 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
         href="/icon.png"
         type="image/png"
       />
-      <body className={inter.className + "h-screen bg-gray-800 text-gray-100"}>
+      <body className={inter.className + "h-full bg-gray-800 text-gray-100"}>
         <LanguageWrapper>
           <ModalWrapper>
             <Navbar>
@@ -35,17 +42,17 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
               <div>
                 <ul>
                   <NavItem href={"/" + params.lang + "/albums"}>
-                    <PhotoIcon className="w-7 h-7" />
+                    <PhotoIcon className="w-6 h-6 md:w-7 md:h-7" />
                   </NavItem>
                   <NavItem href={"/" + params.lang + "/posts"}>
-                    <NewspaperIcon className="w-7 h-7" />
+                    <NewspaperIcon className="w-6 h-6 md:w-7 md:h-7" />
                   </NavItem>
                 </ul>
               </div>
-              <div className="mt-auto">
+              <div className="ml-auto md:mt-auto">
                 <ul>
                   <LanguageSwitcher>
-                    <LanguageIcon className="w-7 h-7" />
+                    <LanguageIcon className="w-6 h-6 md:w-7 md:h-7" />
                   </LanguageSwitcher>
                   {/* <ControlItem>
                     <SunIcon className="w-7 h-7" />
@@ -53,7 +60,7 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
                 </ul>
               </div>
             </Navbar>
-            <main className="ml-16 mt-auto h-screen">
+            <main className="mx-3 mt-auto h-screen md:ml-16">
               {children}
             </main>
           </ModalWrapper>
