@@ -14,7 +14,7 @@ export default function ModalLink({id, children}: {
   }) // TODO: consolidate openModal and closeModal at the wrapper level
 
   return (
-    <div onClick={openModal} className="absolute w-48 h-48 cursor-pointer">
+    <div onClick={openModal} className="cursor-pointer">
       {children}
     </div>
   )
