@@ -15,8 +15,8 @@ export default function AlbumItem({url, title, cover, photo_count, album_count, 
   const album_count_text = album_count + config.t_album_count[config.locales.findIndex(l => l == lang)]
 
   return (
-    <Link href={"/" + lang + url} className="inline-block w-[45vw] md:w-80 rounded-lg m-[1vw] md:m-1 pb-2 bg-gray-700 hover:scale-[1.02] transition-transform">
-      <div className="relative h-[45vw] md:h-80 b-12 overflow-hidden rounded-t-lg justify-center align-middle">
+    <Link href={"/" + lang + url} className="inline-block w-[48vw] md:w-80 rounded-lg m-[1vw] md:m-1 pb-2 bg-gray-700 hover:scale-[1.02] transition-transform">
+      <div className="relative h-[48vw] md:h-80 b-12 overflow-hidden rounded-t-lg justify-center align-middle">
         <Image
           src={imageSize(cover, 320)}
           alt={title}

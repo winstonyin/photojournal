@@ -54,12 +54,12 @@ export default function Post({params}: {params: {lang: string, slug: string}}) {
               p: {
                 component: "p",
                 props: {
-                  className: "mb-4"
+                  className: "mb-2 mx-2 md:mb-4 md:mx-0"
                 }
               }
             }
           }}
-          className="m-auto p-3 w-[808px] text-xl font-thin"
+          className="m-auto pb-8 md:p-3 md:w-[808px] text-xl font-thin"
         >
           {post.post}
         </Markdown>

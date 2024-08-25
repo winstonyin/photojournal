@@ -12,8 +12,8 @@ export default function PostItem({url, title, date, cover, count, blurb}: {
   blurb: string
 }) {
   return (
-    <Link href={url} className="flex w-[660px] h-56 rounded-lg m-1 bg-gray-700 hover:scale-[1.01] transition-transform">
-      <div className="relative w-56 h-56 overflow-hidden rounded-l-lg justify-center align-middle">
+    <Link href={url} className="flex w-[94vw] md:w-[660px] md:h-56 rounded-lg md:m-1 bg-gray-700 hover:scale-[1.01] transition-transform">
+      <div className="relative w-[max(20vw,130px)] h-[max(20vw,130px)] md:w-56 md:h-56 overflow-hidden rounded-l-lg justify-center align-middle">
         <Image
           src={imageSize(cover, 224)}
           alt="featured photo"
@@ -22,14 +22,14 @@ export default function PostItem({url, title, date, cover, count, blurb}: {
           unoptimized
         />
       </div>
-      <div className="flex flex-col justify-between w-[436px] px-4 py-6 overflow-hidden">
+      <div className="flex flex-col justify-between w-[72vw] md:w-[436px] px-2 py-2 md:px-4 md:py-6 overflow-hidden">
         <div>
-          <h3 className="mb-4 text-2xl whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
-          <p className="h-6 whitespace-nowrap overflow-hidden text-ellipsis">{blurb}</p>
+          <h3 className="mb-4 text-xl md:text-2xl whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
+          <p className="h-6 text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">{blurb}</p>
         </div>
-        <div>
-          <p className="text-gray-300">{date}</p>
-          <p className="text-gray-300">{count} photos</p>
+        <div className="text-sm md:text-base text-gray-300">
+          <p className="whitespace-nowrap overflow-hidden text-ellipsis">{date}</p>
+          <p className="whitespace-nowrap overflow-hidden text-ellipsis">{count} photos</p>
         </div>
       </div>
     </Link>

@@ -21,7 +21,7 @@ export default function PostsPage({params}: {params: {lang: string}}) {
   })
 
   return (
-    <div className="flex flex-wrap p-3">
+    <div className="flex flex-wrap py-3 md:p-3">
       {post_items}
     </div>
   )
