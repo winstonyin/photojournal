@@ -60,7 +60,7 @@ export default function RootLayout({params, children}: {params: {lang: string}, 
                 </ul>
               </div>
             </Navbar>
-            <main className="mx-3 mt-auto h-screen md:ml-16">
+            <main className="mx-[3vw] mt-auto h-screen md:ml-16">
               {children}
             </main>
           </ModalWrapper>
