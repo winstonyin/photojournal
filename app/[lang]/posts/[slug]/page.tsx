@@ -59,7 +59,7 @@ export default function Post({params}: {params: {lang: string, slug: string}}) {
               }
             }
           }}
-          className="m-auto pb-8 md:p-3 md:w-[808px] text-xl font-thin"
+          className="m-auto pb-12 md:p-3 md:w-[808px] text-xl font-thin"
         >
           {post.post}
         </Markdown>

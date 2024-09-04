@@ -10,7 +10,8 @@
 * Pre-loading neighbouring images in modal
 * Loading animation
 * Hashing photo names
-* Mobile UI
+* Fix mobile post cover photo jitter
+* Post gallery glob
 
 site-config.json
 * Configuration for the whole site

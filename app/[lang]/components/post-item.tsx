@@ -12,7 +12,7 @@ export default function PostItem({url, title, date, cover, count, blurb}: {
   blurb: string
 }) {
   return (
-    <Link href={url} className="flex w-[94vw] md:w-[660px] md:h-56 rounded-lg md:m-1 bg-gray-700 hover:scale-[1.01] transition-transform">
+    <Link href={url} className="flex w-[98vw] md:w-[660px] m-[1vw] md:h-56 rounded-lg md:m-1 bg-gray-700 hover:scale-[1.01] transition-transform">
       <div className="relative w-[max(20vw,130px)] h-[max(20vw,130px)] md:w-56 md:h-56 overflow-hidden rounded-l-lg justify-center align-middle">
         <Image
           src={imageSize(cover, 224)}
