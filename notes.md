@@ -18,4 +18,15 @@ site-config.json
 * Paths must start with . at the site root, with no trailing /
 
 Compile TS scripts into JS before executing
-npx tsc --resolveJsonModule --esModuleInterop scripts/prebuild.ts; npm run prebuild
+npx tsc --resolveJsonModule --esModuleInterop scripts/[script].ts; npm run [script]
+
+Whenever photos change, execute
+npm run process
+to generates thumbnails and remove orphaned thumbnails and empty directories
+
+Before building the site, execute
+npm run prebuild
+to read the filesystem and generate json files containing site content
+
+Build the site
+npm run build
